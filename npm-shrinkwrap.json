@@ -444,6 +444,95 @@
         }
       }
     },
+    "mongodb": {
+      "version": "2.0.27",
+      "from": "mongodb@",
+      "resolved": "https://registry.npmjs.org/mongodb/-/mongodb-2.0.27.tgz",
+      "dependencies": {
+        "mongodb-core": {
+          "version": "1.1.21",
+          "from": "mongodb-core@1.1.21",
+          "resolved": "https://registry.npmjs.org/mongodb-core/-/mongodb-core-1.1.21.tgz",
+          "dependencies": {
+            "bson": {
+              "version": "0.3.1",
+              "from": "bson@~0.3",
+              "resolved": "https://registry.npmjs.org/bson/-/bson-0.3.1.tgz",
+              "dependencies": {
+                "bson-ext": {
+                  "version": "0.1.0",
+                  "from": "bson-ext@~0.1",
+                  "resolved": "https://registry.npmjs.org/bson-ext/-/bson-ext-0.1.0.tgz",
+                  "dependencies": {
+                    "nan": {
+                      "version": "1.7.0",
+                      "from": "nan@1.7.0",
+                      "resolved": "https://registry.npmjs.org/nan/-/nan-1.7.0.tgz"
+                    }
+                  }
+                }
+              }
+            },
+            "mkdirp": {
+              "version": "0.5.0",
+              "from": "mkdirp@0.5.0",
+              "resolved": "https://registry.npmjs.org/mkdirp/-/mkdirp-0.5.0.tgz",
+              "dependencies": {
+                "minimist": {
+                  "version": "0.0.8",
+                  "from": "minimist@0.0.8",
+                  "resolved": "https://registry.npmjs.org/minimist/-/minimist-0.0.8.tgz"
+                }
+              }
+            },
+            "rimraf": {
+              "version": "2.2.6",
+              "from": "rimraf@2.2.6",
+              "resolved": "https://registry.npmjs.org/rimraf/-/rimraf-2.2.6.tgz"
+            },
+            "kerberos": {
+              "version": "0.0.10",
+              "from": "kerberos@~0.0",
+              "resolved": "https://registry.npmjs.org/kerberos/-/kerberos-0.0.10.tgz",
+              "dependencies": {
+                "nan": {
+                  "version": "1.7.0",
+                  "from": "nan@1.7.0",
+                  "resolved": "https://registry.npmjs.org/nan/-/nan-1.7.0.tgz"
+                }
+              }
+            }
+          }
+        },
+        "readable-stream": {
+          "version": "1.0.31",
+          "from": "readable-stream@1.0.31",
+          "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-1.0.31.tgz",
+          "dependencies": {
+            "core-util-is": {
+              "version": "1.0.1",
+              "from": "core-util-is@~1.0.0",
+              "resolved": "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.1.tgz"
+            },
+            "isarray": {
+              "version": "0.0.1",
+              "from": "isarray@0.0.1",
+              "resolved": "https://registry.npmjs.org/isarray/-/isarray-0.0.1.tgz"
+            },
+            "string_decoder": {
+              "version": "0.10.31",
+              "from": "string_decoder@~0.10.x",
+              "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
+            },
+            "inherits": {
+              "version": "2.0.1",
+              "from": "inherits@~2.0.1",
+              "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
+            }
+          }
+        }
+      }
+    },
     "mongoose": {
       "version": "4.0.1",
       "from": "mongoose@^4.0.1",
@@ -621,6 +710,23 @@
               "resolved": "https://registry.npmjs.org/ee-first/-/ee-first-1.1.0.tgz"
             }
           }
+        }
+      }
+    },
+    "passport": {
+      "version": "0.2.1",
+      "from": "passport@",
+      "resolved": "https://registry.npmjs.org/passport/-/passport-0.2.1.tgz",
+      "dependencies": {
+        "passport-strategy": {
+          "version": "1.0.0",
+          "from": "passport-strategy@1.x.x",
+          "resolved": "https://registry.npmjs.org/passport-strategy/-/passport-strategy-1.0.0.tgz"
+        },
+        "pause": {
+          "version": "0.0.1",
+          "from": "pause@0.0.1",
+          "resolved": "https://registry.npmjs.org/pause/-/pause-0.0.1.tgz"
         }
       }
     },
