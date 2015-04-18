@@ -1,2 +1,1 @@
-# Physical-Computing-Project
-Repository for the Physical Computing project
+this is our phisycal computing project
