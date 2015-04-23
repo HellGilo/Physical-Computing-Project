@@ -6,10 +6,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PresenceSchema = new Schema({
-        _user    : { type: Schema.Types.ObjectId, ref: 'User' },
-        _course : { type: Schema.Types.ObjectId, ref: 'Course' },
-        arrival  : {type : Date},
-        exit     : {type : Date}
+        _user       : { type: Schema.Types.ObjectId, ref: 'User' },
+        _course     : { type: Schema.Types.ObjectId, ref: 'Course' },
+        arrival     : {type : Date},
+        exit        : {type : Date},
+        updated     :{ type: Date, default: Date.now }
     }
 );
 

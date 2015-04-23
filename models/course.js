@@ -10,7 +10,8 @@ var CourseSchema = new Schema({
         _lecturer   : {  type: Schema.Types.ObjectId, ref: 'User' },
         _assistants : [{ type: Schema.Types.ObjectId, ref: 'User' }],
         _students   : [{ type: Schema.Types.ObjectId, ref: 'User' }],
-        _schedule   : [{ type: Schema.Types.ObjectId, ref: 'Events' }]
+        _schedule   : [{ type: Schema.Types.ObjectId, ref: 'Events' }],
+        updated     :{ type: Date, default: Date.now }
     }
 );
 
