@@ -2,19 +2,19 @@
  * Created by Hellmaster on 19/04/15.
  */
 
-/** User Schema for Chancemap **/
-
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
         net_id  : {type: String, required: true, unique: true},
+        token : {type: String},
         email     : {type:String, required: true, unique: true},
-        first_name : String,
-        last_name  : String
+        first_name : {type: String},
+        last_name  :{type: String},
+        type :  { type: String, enum: ['student', 'teacher', 'assistant']},
+        _courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }]
     }
 );
-
 
 
 
