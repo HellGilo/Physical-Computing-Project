@@ -6,18 +6,19 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-        net_id      : {type: String, required: true, unique: true},
-        token       : {type: String},
-        email       : {type:String, required: true, unique: true},
-        first_name  : {type: String},
-        last_name   : {type: String},
-        type        : { type: String, enum: ['student', 'teacher', 'assistant']},
-        _courses    : [{ type: Schema.Types.ObjectId, ref: 'Course' }],
-        updated     : { type: Date, default: Date.now }
+        id              : {type: String, required: true, unique: true},
+        username        : {type: String, required: true, unique: true},
+        token           : {type: String},
+        email           : {type:String, required: true, unique: true},
+        firstname       : {type: String},
+        lastname        : {type: String},
+        role            : { type: String, enum: ['student', 'teacher', 'assistant'],default:"student"},
+        city            : {type: String},
+        lang            : {type: String},
+        avatar          : {type: String},
+        _courses        : [{ type: Schema.Types.ObjectId, ref: 'Course' }],
+        timemodified    : { type: Number }
     }
 );
-
-
-
 
 module.exports = mongoose.model('User', UserSchema);

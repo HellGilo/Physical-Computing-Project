@@ -14,7 +14,12 @@ var conf = {
     DBoptions: {
         user: "",
         pass: ""
-    }
+    },
+
+
+    token_exp : 7,
+    token_secret : "this.is.my"
+
 };
 
 

@@ -7,11 +7,11 @@ var bodyParser = require('body-parser');
 
 
 var routes = require('./routes/index');
+var login = require('./routes/login');
 var users = require('./routes/users');
 var courses = require('./routes/courses');
 var events = require('./routes/events');
 var presences = require('./routes/presences');
-
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -37,12 +37,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+app.all('/api/*', [require('./routes/middlewares/validateRequest')]);
+
 
 app.use('/', routes);
-app.use('/users', users);
-app.use('/courses', courses);
-app.use('/events', events);
-app.use('/presences', presences);
+app.use('/login', login);
+app.use('/api/users', users);
+app.use('/api/courses', courses);
+app.use('/api/events', events);
+app.use('/api/presences', presences);
 
 
 
