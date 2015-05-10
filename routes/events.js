@@ -5,6 +5,10 @@
 
 var express = require('express');
 var router = express.Router();
+var Event = require('../models/event');
+var Auth = require('./utils/auth');
+var User = require('../models/user');
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -14,9 +18,24 @@ router.get('/', function(req, res, next) {
 
 
 /* GET info about a defined event */
-router.get('/eid', function(req, res, next) {
-    res.send(200);
-    // TODO - for anyone
+router.get('/:eid', function(req, res, next) {
+    var populate = [
+        { path: "_course", select: "name"}
+    ];
+
+    Event.findOne({_id : req.params.eid }).populate(populate).exec(function (err, event) {
+        if (err) {
+            res.status(500);
+            return res.send("error 500" + err.message);
+        }
+        if (!event) {
+            res.status(404);
+            return res.send("couldn't find the wanted course");
+        }
+
+        res.status(200)
+        return res.json(event)
+    });
 });
 
 
