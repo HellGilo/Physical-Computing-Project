@@ -44,11 +44,11 @@ module.exports = function(req, res, next) {
             } else {
                 // No user with this name exists, respond back with a 401
                 res.status(401);
-                res.json({
+                return res.json({
                     "status": 401,
                     "message": "Invalid User"
                 });
-                return;
+
             }
             })
         } catch (err) {
@@ -61,12 +61,13 @@ module.exports = function(req, res, next) {
             });
         }
     } else {
+            console.log("here")
         res.status(401);
-        res.json({
+        return res.json({
             "status": 401,
             "message": "Invalid Token or Key"
         });
-        return;
+
     }
 
 

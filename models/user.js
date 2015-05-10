@@ -12,11 +12,10 @@ var UserSchema = new Schema({
         email           : {type:String, required: true, unique: true},
         firstname       : {type: String},
         lastname        : {type: String},
-        role            : { type: String, enum: ['student', 'teacher', 'assistant'],default:"student"},
         city            : {type: String},
         lang            : {type: String},
         avatar          : {type: String},
-        _courses        : [{ type: Schema.Types.ObjectId, ref: 'Course' }],
+        _courses        : [{ type: Schema.Types.ObjectId, ref: 'Course', default:[]  }],
         timemodified    : { type: Number }
     }
 );

@@ -28,6 +28,49 @@ router.post('/eid', function(req, res, next) {
 });
 
 
+/* POST to create an event */
+//router.post('/', function(req, res, next) {
+//
+//    if(!Auth.validate_role(req.user)){
+//        res.status(401);
+//        return res.send("you don't have the authorization to complete this action");
+//    }
+//
+//    var new_course = new Course ({name : req.body["name"], _lecturer : [req.user._id]});
+//
+//    new_course.save(function(err){
+//        if (err) {
+//            console.log(err);
+//            res.status(500);
+//            return res.send("error 500" + err.message);
+//        }
+//
+//        User.findOne({_id : req.user._id }).exec(function (err, user) {
+//            if (err) {
+//                res.status(500);
+//                return res.send("error 500" + err.message);
+//            }
+//            if (!user) {
+//                res.status(404);
+//                return res.send("couldn't find the wanted user");
+//            }
+//
+//            user._courses.push(new_course._id);
+//
+//            user.save(function(err){
+//                    if (err) {
+//                        console.log(err);
+//                        res.status(500);
+//                        return res.send("error 500" + err.message);
+//                    }
+//                    res.status(200);
+//                    return res.send(200);
+//                }
+//            )
+//
+//        });
+//    });
+//});
 
 
 

@@ -13,7 +13,6 @@ var jwt = require('jwt-simple');
 /* POST user authentication . */
 router.post('/', function(req, res, next) {
 
-
     var username = req.body.username || '';
     var password = req.body.password || '';
 
@@ -25,7 +24,6 @@ router.post('/', function(req, res, next) {
         });
         return;
     }
-
 
     Moodle.login(username,password, authentication_callback(res));
 });

@@ -6,7 +6,7 @@ var config = require("./config");
 
 db = mongoose.connect(config.mongoDBurl, config.DBoptions);
 mongoose.connection.on('open', function() {
-    console.log('restify Server connected to '+config.mongoDBurl);
+    console.log('express Server connected to '+config.mongoDBurl);
 });
 
 mongoose.connection.on('error', function(e,g) {
