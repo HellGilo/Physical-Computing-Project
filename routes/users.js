@@ -114,7 +114,7 @@ router.post('/:id', function(req, res, next) {
 
 
  else   if(remove_course)
-      Course.findOne({_id : add_course}).exec(function(err, course) {
+      Course.findOne({_id : remove_course}).exec(function(err, course) {
 
         if (err) {
           console.log(err);
@@ -160,6 +160,84 @@ router.post('/:id', function(req, res, next) {
 
   });
 });
+
+
+
+
+
+router.get("/:id/schedule", function(req,res){
+
+        var user = req.user;
+        var today = req.query.time;
+
+
+        var ten_minutes = 600000;
+
+    var populate = [
+        { path: "_schedule", select: "name start end room _course"}
+    ];
+
+    var populate2 = [
+        { path: "_schedule._course", select: "name"}
+    ];
+
+    Course.find({
+        '_id': { $in: user._courses}
+    }).populate(populate).exec(function(err, courses){
+
+
+        if (err) {
+            console.log(err);
+            res.status(500);
+            return res.send("error 500" + err.message);
+        }
+
+        if (!courses) {
+            res.status(404);
+            return res.send("error 404" + err.message);
+        }
+
+
+        var starting_lectures = [];
+
+        for(var c in courses)
+            if(courses.hasOwnProperty(c) )
+                var events = courses[c]._schedule;
+                    for(var e =0; e < events.length; e++)
+                        if( events[e]._id != null){
+                            var event = events[e];
+
+                            var diff = event.start - ten_minutes;
+
+                            if (diff <= today && today < event.end) {
+                                starting_lectures.push(event);
+                            }
+                        }
+        res.json(starting_lectures);
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+});
+
+
+
+
+
+
+
+
 
 
 

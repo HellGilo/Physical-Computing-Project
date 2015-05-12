@@ -40,7 +40,7 @@ router.get('/:cid', function(req, res, next) {
             return res.send("couldn't find the wanted course");
         }
 
-        res.status(200)
+        res.status(200);
         return res.json(course)
     });
 
@@ -49,11 +49,6 @@ router.get('/:cid', function(req, res, next) {
 
 /* POST to create a course */
 router.post('/', function(req, res, next) {
-
-    //if(!Auth.validate_role(req.user)){
-    //    res.status(401);
-    //    return res.send("you don't have the authorization to complete this action");
-    //}
 
     var new_course = new Course ({name : req.body["name"], _lecturer : [req.user._id]});
 

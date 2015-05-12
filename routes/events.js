@@ -41,13 +41,30 @@ router.get('/:eid', function(req, res, next) {
 
 /* POST updates to a defined event */
 router.post('/eid', function(req, res, next) {
-    res.send(200);
-    // TODO - teachers and TAs can update all info
-    // TODO - students update their presence through the presences API
+
+    var user = req.user;
+
+    // { _course : id, _arrivaltime : time   }
+
+
+
+
+
+
+
+
+
+
+
 });
 
 
-/* POST to create an event */
+
+
+
+
+//
+///* POST to create an event */
 //router.post('/', function(req, res, next) {
 //
 //    if(!Auth.validate_role(req.user)){
