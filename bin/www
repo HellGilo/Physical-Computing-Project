@@ -10,9 +10,7 @@ var http = require('http');
 var https = require('https');
 var fs = require("fs");
 var config = require("../config");
-var db = require("../mongodb"),
-    pem = require('pem');
-
+var db = require("../mongodb");
 
 /**
  * Get port from environment and store in Express.
