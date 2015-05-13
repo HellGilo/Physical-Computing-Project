@@ -1,52 +1,18 @@
 /**
- * Created by Hellmaster on 12/05/15.
+ * Created by Hellmaster on 23/04/15.
  */
 
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+var Room = new Schema({
+        name        : {type : String},
+        definition  : {type : Object},
+        timemodified     :{ type: Date, default: Date.now }
+    }
+);
 
 
 
 
-
-
-
-
-
-
-
-//"walls" : [
-//    {
-//        "x2" : -2.9883741036186,
-//        "orientation" : 172.007696533203,
-//        "x1" : 2.4507436214663,
-//        "y2" : 1.18636189142584,
-//        "y1" : 1.95003498345293
-//    },
-//    {
-//        "x2" : -2.34880999489868,
-//        "orientation" : 78.4744445800781,
-//        "x1" : -2.9883741036186,
-//        "y2" : -1.95003498345293,
-//        "y1" : 1.18636189142584
-//    },
-//    {
-//        "x2" : 2.9883741036186,
-//        "orientation" : 349.465905761719,
-//        "x1" : -2.34880999489868,
-//        "y2" : -0.957560995170723,
-//        "y1" : -1.95003498345293
-//    },
-//    {
-//        "x2" : 2.4507436214663,
-//        "orientation" : 259.524017333984,
-//        "x1" : 2.9883741036186,
-//        "y2" : 1.95003498345293,
-//        "y1" : -0.957560995170723
-//    }
-//]
-
-
-
-
-
-
-
+module.exports = mongoose.model('Room', Room);
