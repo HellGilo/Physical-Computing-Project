@@ -10,7 +10,7 @@ var EventSchema = new Schema({
         _course     : { type: Schema.Types.ObjectId, ref: 'Course' },
         start       : {type : Number},
         end         : {type : Number},
-        _room        : [{ type: Schema.Types.ObjectId, ref: 'Room'}],
+        _room       :{ type: Schema.Types.ObjectId, ref: 'Room'},
         presences   : [{ type: Schema.Types.ObjectId, ref: 'Presence',default:[]  }],
         timemodified     :{ type: Number, default: Date.now }
     }
