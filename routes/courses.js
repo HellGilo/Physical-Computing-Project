@@ -11,6 +11,7 @@ var Course = require("./../models/course");
 var Auth = require('./utils/auth');
 var User = require('../models/user');
 var Event = require('../models/event');
+var Room = require('../models/room');
 
 
 /* GET home page for courses  */
@@ -27,7 +28,7 @@ router.get('/:cid', function(req, res, next) {
         { path: "_lecturer", select: "firstname lastname avatar email"},
         { path: "_assistants", select: "firstname lastname avatar email"},
         { path: "_students", select: " firstname lastname avatar email"},
-        { path: "_schedule", select: " name start end room"}
+        { path: "_schedule", select: " name start end _room"}
     ];
 
     Course.findOne({_id : req.params.cid }).populate(populate).exec(function (err, course) {
@@ -40,8 +41,15 @@ router.get('/:cid', function(req, res, next) {
             return res.send("couldn't find the wanted course");
         }
 
-        res.status(200);
-        return res.json(course)
+
+        Room.populate(course, {
+            path: '_schedule._room',
+            select: 'name'
+        },  function() {
+            res.status(200);
+            return res.json(course)
+
+        });
     });
 
 });
@@ -121,25 +129,40 @@ router.post('/:cid', function(req, res, next) {
         var remove_event = req.body.remove_event || false;
 
         if (add_event) {
-            var e = new Event({
-                name: add_event.name,
-                _course: req.params.cid,
-                start: add_event.start,
-                end: add_event.end,
-                room: add_event.room,
-                timemodified: new Date().getTime()
-            });
+                    Room.findOne({name : add_event.room}).exec(function(err, room){
 
-            e.save(function (err) {
-                    if (err) {
-                        console.log(err);
-                        res.status(500);
-                        return res.send("error 500" + err.message);
-                    }
-                    course._schedule.push(e._id);
-                    save();
+                        if (err) {
+                            console.log(err);
+                            res.status(500);
+                            return res.send("error 500" + err.message);
+                        }
+
+                        else if (!room) {
+                            res.status(404);
+                            return res.send("the room does not exists");
+                        }
+                        else {
+
+                            var e = new Event({
+                                name: add_event.name,
+                                _course: req.params.cid,
+                                start: add_event.start,
+                                end: add_event.end,
+                                _room: room._id
+                            });
+
+                            e.save(function (err) {
+                                    if (err) {
+                                        console.log(err);
+                                        res.status(500);
+                                        return res.send("error 500" + err.message);
+                                    }
+                                    course._schedule.push(e._id);
+                                    save();
+                                }
+                            )
                 }
-            )
+            })
         }
 
         else if (remove_event){
@@ -156,8 +179,6 @@ router.post('/:cid', function(req, res, next) {
             )
 
         }
-
-
 
 
         function save() {

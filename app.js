@@ -12,6 +12,7 @@ var users = require('./routes/users');
 var courses = require('./routes/courses');
 var events = require('./routes/events');
 var presences = require('./routes/presences');
+var rooms = require ('./routes/rooms');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -58,7 +59,7 @@ app.use('/api/users', users);
 app.use('/api/courses', courses);
 app.use('/api/events', events);
 app.use('/api/presences', presences);
-
+app.use('/api/rooms', rooms);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
