@@ -5,7 +5,8 @@ var router = express.Router();
 var User = require('../models/user');
 var Auth = require('./utils/auth');
 var Course = require("./../models/course");
-
+var Room = require("./../models/room");
+var Promise = require("bluebird");
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -170,11 +171,10 @@ router.get("/:id/schedule", function(req,res){
         var user = req.user;
         var today = req.query.time;
 
-
         var ten_minutes = 600000;
 
     var populate = [
-        { path: "_schedule", select: "name start end room _course"}
+        { path: "_schedule", select: "name start end _room _course"}
     ];
 
     var populate2 = [
@@ -201,40 +201,56 @@ router.get("/:id/schedule", function(req,res){
         var starting_lectures = [];
 
         for(var c in courses)
-            if(courses.hasOwnProperty(c) )
+            if(courses.hasOwnProperty(c) ){
                 var events = courses[c]._schedule;
+                if(events)
                     for(var e =0; e < events.length; e++)
                         if( events[e]._id != null){
                             var event = events[e];
-
                             var diff = event.start - ten_minutes;
-
                             if (diff <= today && today < event.end) {
                                 starting_lectures.push(event);
                             }
                         }
-        res.json(starting_lectures);
+                }
+
+
+
+        var promises = [];
+        for(var e =0; e < starting_lectures.length; e++)
+        {
+            promises.push(populate_room(starting_lectures[e]));
+        }
+
+        Promise.all(promises).then(function(){
+            res.json(starting_lectures);
+        })
+
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 });
 
 
 
 
+function populate_room(event){
+    return new Promise(function (resolve, reject) {
+        Room.populate(event, {
+            path: '_room',
+            select: 'name'
+        },  function() {
+            resolve(event);
+        });
+    })
 
+
+
+
+
+
+
+
+}
 
 
 

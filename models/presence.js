@@ -12,7 +12,7 @@ var PresenceSchema = new Schema({
         _course     : { type: Schema.Types.ObjectId, ref: 'Course' },
         arrival     : {type : Date},
         exit        : {type : Date},
-        timemodified     : { type: Date, default: Date.now }
+            timemodified     :{ type: Number, default: Date.now }
 
     }
 );

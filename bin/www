@@ -22,8 +22,8 @@ var certificate = fs.readFileSync('./../ssl/server.crt');
 
 var credentials = {key: privateKey, cert: certificate};
 
-var port = normalizePort(process.env.PORT || config.port ||  '3000');
-app.set('port', 3000);
+var port = normalizePort(process.env.PORT || config.port ||  '4000');
+app.set('port', 4000);
 /**
  * Create HTTP server.
  */
@@ -31,7 +31,7 @@ var server;
 //pem.createCertificate({days:1, selfSigned:true}, function(err, keys){
 //  console.log(keys);
   server = https.createServer(credentials, app);
-  server.listen(3000);
+  server.listen(4000);
   server.on('error', onError);
   server.on('listening', onListening);
 //});

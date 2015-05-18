@@ -16,7 +16,7 @@ var UserSchema = new Schema({
         lang            : {type: String},
         avatar          : {type: String},
         _courses        : [{ type: Schema.Types.ObjectId, ref: 'Course', default:[]  }],
-        timemodified    : { type: Number }
+        timemodified     :{ type: Number, default: Date.now }
     }
 );
 

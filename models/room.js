@@ -8,7 +8,7 @@ var Schema = mongoose.Schema;
 var Room = new Schema({
         name        : {type : String, unique: true},
         definition  : {type : Object, unique: true},
-        timemodified:{ type: Date, default: Date.now }
+        timemodified     :{ type: Number, default: Date.now }
     }
 );
 

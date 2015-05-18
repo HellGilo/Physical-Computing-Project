@@ -8,11 +8,11 @@ var Schema = mongoose.Schema;
 var EventSchema = new Schema({
         name        : {type : String},
         _course     : { type: Schema.Types.ObjectId, ref: 'Course' },
-        start       : {type : Date},
-        end         : {type : Date},
+        start       : {type : Number},
+        end         : {type : Number},
         _room        : [{ type: Schema.Types.ObjectId, ref: 'Room'}],
         presences   : [{ type: Schema.Types.ObjectId, ref: 'Presence',default:[]  }],
-        timemodified     :{ type: Date, default: Date.now }
+        timemodified     :{ type: Number, default: Date.now }
     }
 );
 

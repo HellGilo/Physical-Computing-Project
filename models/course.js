@@ -12,7 +12,7 @@ var CourseSchema = new Schema({
         _students   : [{ type: Schema.Types.ObjectId, ref: 'User',default:[]  }],
         _schedule   : [{ type: Schema.Types.ObjectId, ref: 'Event',default:[]  }],
         timelimit   : {type:Number, default : -1},
-        timemodified     :{ type: Date, default: Date.now }
+        timemodified     :{ type: Number, default: Date.now }
     }
 );
 

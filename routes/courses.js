@@ -41,7 +41,6 @@ router.get('/:cid', function(req, res, next) {
             return res.send("couldn't find the wanted course");
         }
 
-
         Room.populate(course, {
             path: '_schedule._room',
             select: 'name'
