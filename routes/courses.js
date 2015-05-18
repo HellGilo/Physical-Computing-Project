@@ -16,10 +16,25 @@ var Room = require('../models/room');
 
 /* GET home page for courses  */
 router.get('/', function(req, res, next) {
-    res.json({
-        "get_course": config.root_url + "/course/:cid",
-        "post_course": config.root_url +"/course/:cid"
+
+    Course.find({}).exec(function(err, courses){
+
+        if (err) {
+            res.status(500);
+            return res.send("error 500" + err.message);
+        }
+        if (!courses) {
+            res.status(404);
+            return res.send("couldn't find the wanted course");
+        }
+
+        else res.send(courses);
+
+
     })
+
+
+
 });
 
 /* GET info about a defined course  */
