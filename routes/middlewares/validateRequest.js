@@ -23,7 +23,7 @@ module.exports = function(req, res, next) {
     //var key = (req.body && req.body.x_key) || (req.query && req.query.x_key) || req.headers['x-key'];
 
     //if (token || key) {
-        if (token) {
+    if (token) {
         try {
             var decoded = jwt.decode(token,config.token_secret, null, null);
             if (decoded.exp <= Date.now()) {
@@ -35,33 +35,39 @@ module.exports = function(req, res, next) {
                 return;
             }
 
-             //Authorize the user to see if s/he can access our resources
+            //Authorize the user to see if s/he can access our resources
 
-            validateUser(token, function(dbUser){
-            if (dbUser) {
-                  req.user = dbUser;
-                  next();
-            } else {
-                // No user with this name exists, respond back with a 401
-                res.status(401);
-                return res.json({
-                    "status": 401,
-                    "message": "Invalid User"
-                });
-
-            }
+            validateUser(token, function(err, dbUser){
+                if(err){
+                    res.status(500);
+                    res.json({
+                        "status": 500,
+                        "message": " something went wrong while finding the right user ",
+                        "error": err
+                    });
+                }
+                else if (dbUser) {
+                    console.log("user found");
+                    req.user = dbUser;
+                    next();
+                } else {
+                    // No user with this name exists, respond back with a 401
+                    res.status(401);
+                    return res.json({
+                        "status": 401,
+                        "message": "Invalid User"
+                    });
+                }
             })
         } catch (err) {
-            console.log(err);
             res.status(500);
             res.json({
                 "status": 500,
-                "message": "Oops something went wrong",
+                "message": "You are using the fucking wrong token!",
                 "error": err
             });
         }
     } else {
-            console.log("here")
         res.status(401);
         return res.json({
             "status": 401,
@@ -75,10 +81,14 @@ module.exports = function(req, res, next) {
 
     function validateUser(token, cb){
         User.findOne({token : token}, function(err, user){
-            if (err)
+            if (err){
                 console.log(err)
+                return cb(err, null);
+            }
+            else if(!user)
+                return cb(false, null);
             else
-                return cb(user)
+                return cb(false, user)
         })
     }
 

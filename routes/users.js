@@ -178,6 +178,11 @@ router.get("/:id/schedule", function(req,res){
         //{ path : "_course", select : "_lecturer name"}
     ];
 
+    if (!user._courses){
+        res.status(200);
+        res.send("you are currently not enrolled in any course");
+        return;
+    }
 
     Course.find({
         '_id': { $in: user._courses}
@@ -239,7 +244,6 @@ router.get("/:id/schedule", function(req,res){
             return Promise.all(p)
             }
         ).then(
-
             function(){
                 res.json(starting_lectures);
             }
