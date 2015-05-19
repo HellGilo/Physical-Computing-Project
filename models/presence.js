@@ -8,11 +8,11 @@ var Schema = mongoose.Schema;
 
 var PresenceSchema = new Schema({
 
-        _user       : { type: Schema.Types.ObjectId, ref: 'User' },
-        _course     : { type: Schema.Types.ObjectId, ref: 'Course' },
-        arrival     : {type : Date},
-        exit        : {type : Date},
-            timemodified     :{ type: Number, default: Date.now }
+        _user           : {type: Schema.Types.ObjectId, ref: 'User' },
+        _course         : {type: Schema.Types.ObjectId, ref: 'Course' },
+        arrival         : {type : Number},
+        exit            : {type : Number},
+        timemodified    : {type: Number, default: Date.now }
 
     }
 );
