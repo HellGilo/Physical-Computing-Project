@@ -10,7 +10,7 @@ var Promise = require("bluebird");
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+    res.send('respond with a resource');
 });
 
 
@@ -18,148 +18,148 @@ router.get('/', function(req, res, next) {
 // GET info about a defined user
 router.get('/:id', function(req, res, next) {
 
-  var id = req.params.id;
+    var id = req.params.id;
 
-  var populate = [
-    { path: "_courses", select: "name"}
-  ];
+    var populate = [
+        { path: "_courses", select: "name"}
+    ];
 
-  User.find( { $or: [ { id: id }, { email: id}, {username : id} ] }, {_id : 0, __v : 0, token : 0}).populate(populate).exec(function (err, user) {
-    if (err) {
-      res.status(500);
-      return res.send("error 500" + err.message);
-    }
-    if (!user) {
-      res.status(404);
-      return res.send("error 404" + err.message);
-    }
-    res.send(user);
-  });
+    User.find( { $or: [ { id: id }, { email: id}, {username : id} ] }, {_id : 0, __v : 0, token : 0}).populate(populate).exec(function (err, user) {
+        if (err) {
+            res.status(500);
+            return res.send("error 500" + err.message);
+        }
+        if (!user) {
+            res.status(404);
+            return res.send("error 404" + err.message);
+        }
+        res.send(user);
+    });
 
-  // TODO - for anyone
+    // TODO - for anyone
 });
 
 
 
 // POST updates to a defined user
 router.post('/:id', function(req, res, next) {
-  var myuser = req.user;
-  var add_course = req.body.enroll || false;
-  var remove_course = req.body.unenroll || false;
+    var myuser = req.user;
+    var add_course = req.body.enroll || false;
+    var remove_course = req.body.unenroll || false;
 
-  if (!add_course && ! remove_course)  return res.send(200);
+    if (!add_course && ! remove_course)  return res.send(200);
 
-  var id = req.params.id;
+    var id = req.params.id;
 
-  if (myuser.id != id && myuser.username != id && myuser.email != id) {
-      if (!Auth.validate_role(myuser)) {
-        res.status(401);
-        return res.send("you don't have the authorization to complete this action");
-      }
-  }
-
-  User.findOne( { $or: [ { id: id }, { email: id}, {username : id} ] }).exec(function (err, user) {
-    if (err) {
-      res.status(500);
-      return res.send("error 500" + err.message);
-    }
-    if (!user) {
-      res.status(404);
-      return res.send("error 404" + err.message);
+    if (myuser.id != id && myuser.username != id && myuser.email != id) {
+        if (!Auth.validate_role(myuser)) {
+            res.status(401);
+            return res.send("you don't have the authorization to complete this action");
+        }
     }
 
-
-    if(add_course)
-    Course.findOne({_id : add_course}).exec(function(err, course) {
-
-      if (err) {
-        console.log(err);
-        res.status(500);
-        return res.send("error 500" + err.message);
-      }
-
-      if (!course) {
-        res.status(404);
-        return res.send("error 404" + err.message);
-      }
-
-        (user._courses.indexOf(course._id) == -1) ? user._courses.push(course._id) : "";
-
-      user.save(function (err) {
-            if (err) {
-              console.log(err);
-              res.status(500);
-              return res.send("error 500" + err.message);
-            }
+    User.findOne( { $or: [ { id: id }, { email: id}, {username : id} ] }).exec(function (err, user) {
+        if (err) {
+            res.status(500);
+            return res.send("error 500" + err.message);
+        }
+        if (!user) {
+            res.status(404);
+            return res.send("error 404" + err.message);
+        }
 
 
-            (course._students.indexOf(user._id) == -1) ? course._students.push(user._id) : "";
+        if(add_course)
+            Course.findOne({_id : add_course}).exec(function(err, course) {
 
-            course.save(function (err) {
-                  if (err) {
+                if (err) {
                     console.log(err);
                     res.status(500);
                     return res.send("error 500" + err.message);
-                  }
-
-                  res.status(200);
-                  return res.send(200);
-
-
                 }
-            );
-          }
-      );
+
+                if (!course) {
+                    res.status(404);
+                    return res.send("error 404 no course");
+                }
+
+                (user._courses.indexOf(course._id) == -1) ? user._courses.push(course._id) : "";
+
+                user.save(function (err) {
+                        if (err) {
+                            console.log(err);
+                            res.status(500);
+                            return res.send("error 500" + err.message);
+                        }
+
+
+                        (course._students.indexOf(user._id) == -1) ? course._students.push(user._id) : "";
+
+                        course.save(function (err) {
+                                if (err) {
+                                    console.log(err);
+                                    res.status(500);
+                                    return res.send("error 500" + err.message);
+                                }
+
+                                res.status(200);
+                                return res.send(200);
+
+
+                            }
+                        );
+                    }
+                );
+
+            });
+
+
+        else   if(remove_course)
+            Course.findOne({_id : remove_course}).exec(function(err, course) {
+
+                if (err) {
+                    console.log(err);
+                    res.status(500);
+                    return res.send("error 500" + err.message);
+                }
+
+                if (!course) {
+                    res.status(404);
+                    return res.send("error 404" + err.message);
+                }
+
+                (user._courses.indexOf(remove_course) != -1) ? user._courses.splice(user._courses.indexOf(remove_course), 1) : "";
+
+
+                user.save(function (err) {
+                        if (err) {
+                            console.log(err);
+                            res.status(500);
+                            return res.send("error 500" + err.message);
+                        }
+
+
+                        (course._students.indexOf(user._id) != -1) ? course._students.splice(course._students.indexOf(user._id), 1) : "";
+
+                        course.save(function (err) {
+                                if (err) {
+                                    console.log(err);
+                                    res.status(500);
+                                    return res.send("error 500" + err.message);
+                                }
+
+                                res.status(200);
+                                return res.send(200);
+
+
+                            }
+                        );
+                    }
+                );
+
+            });
 
     });
-
-
- else   if(remove_course)
-      Course.findOne({_id : remove_course}).exec(function(err, course) {
-
-        if (err) {
-          console.log(err);
-          res.status(500);
-          return res.send("error 500" + err.message);
-        }
-
-        if (!course) {
-          res.status(404);
-          return res.send("error 404" + err.message);
-        }
-
-         (user._courses.indexOf(remove_course) != -1) ? user._courses.splice(user._courses.indexOf(remove_course), 1) : "";
-
-
-        user.save(function (err) {
-              if (err) {
-                console.log(err);
-                res.status(500);
-                return res.send("error 500" + err.message);
-              }
-
-
-              (course._students.indexOf(user._id) != -1) ? course._students.splice(course._students.indexOf(user._id), 1) : "";
-
-              course.save(function (err) {
-                    if (err) {
-                      console.log(err);
-                      res.status(500);
-                      return res.send("error 500" + err.message);
-                    }
-
-                    res.status(200);
-                    return res.send(200);
-
-
-                  }
-              );
-            }
-        );
-
-      });
-
-  });
 });
 
 
@@ -168,18 +168,16 @@ router.post('/:id', function(req, res, next) {
 
 router.get("/:id/schedule", function(req,res){
 
-        var user = req.user;
-        var today = req.query.time;
+    var user = req.user;
+    var today = req.query.time;
 
-        var ten_minutes = 600000;
+    var ten_minutes = 600000;
 
     var populate = [
         { path: "_schedule", select: "name start end _room _course"}
+        //{ path : "_course", select : "_lecturer name"}
     ];
 
-    var populate2 = [
-        { path: "_schedule._course", select: "name"}
-    ];
 
     Course.find({
         '_id': { $in: user._courses}
@@ -212,7 +210,7 @@ router.get("/:id/schedule", function(req,res){
                                 starting_lectures.push(event);
                             }
                         }
-                }
+            }
 
 
 
@@ -222,12 +220,33 @@ router.get("/:id/schedule", function(req,res){
             promises.push(populate_room(starting_lectures[e]));
         }
 
-        Promise.all(promises).then(function(){
-            res.json(starting_lectures);
-        })
+        for(e =0; e < starting_lectures.length; e++)
+        {
+            promises.push(populate_course(starting_lectures[e]));
+        }
 
+
+
+
+        Promise.all(promises).then(function(pop){
+
+                var p = []
+                for(e =0; e < pop.length; e++)
+                {
+                    p.push(populate_lecturer(pop[e]));
+                }
+
+            return Promise.all(p)
+            }
+        ).then(
+
+            function(){
+                res.json(starting_lectures);
+            }
+
+
+        )
     });
-
 });
 
 
@@ -240,20 +259,34 @@ function populate_room(event){
             select: 'name'
         },  function() {
             resolve(event);
+
         });
     })
-
-
-
-
-
-
-
-
 }
 
 
+function populate_course(event){
+    return new Promise(function (resolve, reject) {
+        Course.populate(event, {
+            path: '_course',
+            select: 'name _lecturer'
+        },  function() {
+            resolve(event);
+        });
+    })
+}
 
+function populate_lecturer(event){
+console.log(event);
+    return new Promise(function (resolve, reject) {
+        User.populate(event, {
+            path: '_course._lecturer',
+            select: 'firstname lastname'
+        },  function() {
+            resolve(event);
+        });
+    })
+}
 
 
 
