@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 
 var Room = new Schema({
         name        : {type : String, unique: true},
-        definition  : {type : Object, unique: true},
+        _region  : { type: Schema.Types.ObjectId, ref: 'Region', required: true  },
         timemodified     :{ type: Number, default: Date.now }
     }
 );

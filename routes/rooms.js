@@ -9,6 +9,7 @@ var router = express.Router();
 var config = require("./../config");
 var Auth = require('./utils/auth');
 var Room = require('../models/room');
+var Region = require('../models/region');
 
 
 /* GET home page for courses  */
@@ -19,7 +20,7 @@ router.get('/', function(req, res, next) {
 /* GET info about a defined course  */
 router.get('/:rid', function(req, res, next) {
 
-    Room.findOne( {name : req.params.rid }).exec(function (err, room) {
+    Room.findOne( {name : req.params.rid }).populate({path: "_region", select : "beacons created_at walls identifier version orientation name linear_objects"}).exec(function (err, room) {
         if (err) {
             res.status(500);
             return res.send("error 500" + err.message);
@@ -38,19 +39,43 @@ router.get('/:rid', function(req, res, next) {
 /* POST to create a course */
 router.post('/', function(req, res, next) {
 
+    var room_name = req.body.name;
+    var region = req.body["region"]
+
+
+
     var new_room = new Room ({definition : req.body["definition"], name : req.body.name});
 
-    new_room.save(function(err){
+
+    var new_region = new Region(region);
+
+
+
+    new_region.save(function(err){
         if (err) {
             console.log(err);
             res.status(500);
             return res.send("error 500" + err.message);
         }
+        console.log(new_region);
 
-        console.log(new_room);
+        var new_room = new Room({name : room_name, _region : new_region._id });
 
-        return res.send(200);
+        new_room.save(function(err){
+            if (err) {
+                console.log(err);
+                res.status(500);
+                return res.send("error 500" + err.message);
+            }
+            console.log(new_room);
+            return res.send(200);
+        });
+
+
     });
+
+
+
 });
 
 
