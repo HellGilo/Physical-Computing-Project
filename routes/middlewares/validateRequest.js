@@ -63,7 +63,7 @@ module.exports = function(req, res, next) {
             res.status(500);
             res.json({
                 "status": 500,
-                "message": "You are using the fucking wrong token!",
+                "message": "You are using the fucking wrong token! (told you fucking 5 times) ",
                 "error": err
             });
         }
