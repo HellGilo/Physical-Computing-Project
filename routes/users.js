@@ -277,7 +277,6 @@ function populate_course(event){
 }
 
 function populate_lecturer(event){
-console.log(event);
     return new Promise(function (resolve, reject) {
         User.populate(event, {
             path: '_course._lecturer',
