@@ -63,7 +63,7 @@ module.exports = function(req, res, next) {
             res.status(500);
             res.json({
                 "status": 500,
-                "message": "You are using the fucking wrong token! (told you fucking 5 times) ",
+                "message": "You are using the fucking wrong token!",
                 "error": err
             });
         }
@@ -82,7 +82,6 @@ module.exports = function(req, res, next) {
     function validateUser(token, cb){
         User.findOne({token : token}, function(err, user){
             if (err){
-                console.log(err)
                 return cb(err, null);
             }
             else if(!user)

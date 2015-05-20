@@ -1,6 +1,7 @@
 /**
  * Created by Hellmaster on 07/05/15.
  */
+"use strict";
 
 var Moodle = require('./utils/moodle_login');
 var express = require('express');
@@ -44,7 +45,20 @@ function authentication_callback(origin_res){
                     create_user(user, origin_res);
                 }
                 else {
-                    return origin_res.json({user : us})
+                    console.log("refreshing token")
+                    var token = genToken();
+
+                    us.token = token.token;
+
+                    User.update({username : user.username}, {"$set" : {token: token.token}},function(err){
+                        if (err) {
+                            console.log(err);
+                            origin_res.status(500);
+                            return origin_res.send("error 500" + err.message);
+                        }
+                        else return origin_res.json({user : us});
+
+                    })
                 }
             })
 
@@ -55,7 +69,7 @@ function authentication_callback(origin_res){
 
 function create_user(new_user, res){
 
-    var token = genToken(new_user);
+    var token = genToken();
     var user = new User(new_user);
     user.token = token.token;
 
