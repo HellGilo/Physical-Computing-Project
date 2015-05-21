@@ -35,7 +35,6 @@ function authentication_callback(origin_res){
             origin_res.status(401);
             return origin_res.send("you do not fucking exist to moodle")
         }
-
         else {
             var user = JSON.parse(json).user;
             User.findOne({username : user.username}, {_id : 0, __v : 0 }, function(err, us){
@@ -48,20 +47,20 @@ function authentication_callback(origin_res){
                     console.log("refreshing token")
                     var token = genToken();
 
-                    us.token = token.token;
-
                     User.update({username : user.username}, {"$set" : {token: token.token}},function(err){
                         if (err) {
                             console.log(err);
                             origin_res.status(500);
                             return origin_res.send("error 500" + err.message);
                         }
-                        else return origin_res.json({user : us});
-
+                        else {
+                            User.findOne({username : user.username}, {_id : 0, __v : 0 }, function(err, u){
+                                origin_res.send({user : u});
+                            });
+                        }
                     })
                 }
             })
-
         }
     }
 }

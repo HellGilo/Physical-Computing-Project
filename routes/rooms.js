@@ -30,7 +30,17 @@ router.get('/:rid', function(req, res, next) {
             return res.send("couldn't find the wanted room");
         }
         res.status(200);
-        return res.json(room)
+
+
+        var copy = JSON.parse(JSON.stringify(room));
+
+        delete copy._region._id;
+
+        copy._region = JSON.stringify(copy._region);
+
+        console.log(typeof copy._region);
+
+        return res.json(copy)
     });
 
 });

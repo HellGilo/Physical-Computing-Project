@@ -72,12 +72,13 @@ router.get('/:eid', function(req, res, next) {
 router.post('/:eid', function(req, res, next) {
     var user = req.user;
 
-    //{ _course : id, _arrivaltime : time   }
-
     var arrival = req.body.arrival || false;
     var exit = req.body.exit || false;
 
     Event.findOne({_id : req.params.eid}).populate({path : "_presences", select : "_user"}).exec(function(err, event){
+
+
+        console.log(event);
 
         if (err) {
             res.status(500);
@@ -91,10 +92,11 @@ router.post('/:eid', function(req, res, next) {
 
         if (arrival){
 
-            for(var p = 0; p < event._presences; p++){
-                if(event._presences[p]._user == user._id ) {
-                    res.status(200);
-                    return res.send("you have alrady signed your presence to this event");
+            for(var p = 0; p < event._presences.length; p++){
+                console.log(event._presences[p]._user.equals(user._id));
+                if(event._presences[p]._user.equals(user._id) ) {
+                    res.status(403);
+                    return res.json ( {message : "you have already signed your presence to this event"});
                 }
             }
 
@@ -121,22 +123,20 @@ router.post('/:eid', function(req, res, next) {
                     }
 
                     res.status(200);
-                    res.send(200);
+                    res.json({message : "ok"});
                 });
             });
         }
-
         else if(exit){
             var presence = false;
-            for(var p = 0; p < event._presences; p++){
-                if(event._presences[p]._user == user._id ) {
+            for(var p = 0; p < event._presences.length; p++){
+                if(event._presences[p]._user.equals(user._id) ) {
                     presence = event._presences[p]._id;
                     break;
                 }
-
             }
             if(!presence){
-                res.status(401);
+                res.status(403);
                 return res.send("you were not signed for this course");
             }
 
@@ -152,6 +152,12 @@ router.post('/:eid', function(req, res, next) {
                     return res.send("there was an error retrieving the presence even if it was previously found");
                 }
 
+
+                if(pres.exit){
+                    res.status(403);
+                    return res.json({message: "you were already signed out from this lecture"})
+                }
+
                 pres.exit = exit;
 
                 pres.save(function (err) {
@@ -160,8 +166,9 @@ router.post('/:eid', function(req, res, next) {
                         res.status(500);
                         return res.send("error 500" + err.message);
                     }
+
                     res.status(200);
-                    res.send(200);
+                    res.send("ok");
                 });
             })
 

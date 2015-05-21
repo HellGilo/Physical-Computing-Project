@@ -24,8 +24,13 @@ module.exports = function(req, res, next) {
 
     //if (token || key) {
     if (token) {
+        console.log(token)
         try {
             var decoded = jwt.decode(token,config.token_secret, null, null);
+
+            console.log(decoded.exp);
+            console.log(Date.now());
+
             if (decoded.exp <= Date.now()) {
                 res.status(400);
                 res.json({
@@ -84,10 +89,7 @@ module.exports = function(req, res, next) {
             if (err){
                 return cb(err, null);
             }
-            else if(!user)
-                return cb(false, null);
-            else
-                return cb(false, user)
+             return cb(false, user)
         })
     }
 
