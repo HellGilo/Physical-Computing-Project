@@ -1,0 +1,32 @@
+<md-sidenav md-is-locked-open="$mdMedia('gt-sm')" class="md-whiteframe-z2" md-component-id="left">
+    <md-list>
+        <md-item layout="row" ng-repeat="course in courseCtrl.courses track by course._id">
+
+            <md-button ng-click="courseCtrl.selectCourse(course)" flex>
+                <img src="./assets/img/usi-fields/cs.png" class="avatar"/>
+                {{course.name}}
+            </md-button>
+        </md-item>
+    </md-list>
+</md-sidenav>
+
+<md-content flex layout-align="center center" id="content">
+
+    <div ng-if="courseCtrl.selected" flex layout="column">
+
+        <h1>{{courseCtrl.selected.name}}</h1>
+
+    </div>
+
+    <div ng-if="!courseCtrl.courses.length" flex layout="column" layout-align="center center">
+        <h1 style="text-align: center; color: #BDBDBD;">
+            You are not enrolled in any course! Think about what you are doing with your life.
+        </h1>
+    </div>
+
+    <md-content flex layout="column" layout-align="center center" ng-if="!courseCtrl.selected" style="height: 100%">
+        <md-icon md-svg-src="./assets/svg/ic_school_24px.svg" style="color: #BDBDBD; height:300px; width:300px;"></md-icon>
+        <h1 style="color: #BDBDBD;">Select a course to see more info.</h1>
+    </md-content>
+
+</md-content>

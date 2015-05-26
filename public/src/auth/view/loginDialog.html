@@ -1,0 +1,42 @@
+<md-dialog aria-label="Login Dialog" class="login-dialog">
+
+    <md-dialog-content>
+
+        <h2 class="md-title">Login</h2>
+        <h4 class="md-body-1">Use your iCorsi credentials. Your data will be used to link your iCorsi account in our database.</h4>
+
+
+        <!--<md-divider style="margin-left:-24px; margin-right:-24px; margin-top: 12px; margin-bottom: 12px;"></md-divider>-->
+
+        <form name="loginForm">
+
+            <md-input-container class="with-md-icon">
+                <label>netID@usi.ch</label>
+                <md-icon md-svg-src="./assets/svg/ic_email_24px.svg"></md-icon>
+                <input ng-model="vm.username" type="email" name="netID">
+            </md-input-container>
+
+            <md-input-container class="with-md-icon">
+                <label>Password</label>
+                <md-icon md-svg-src="./assets/svg/ic_vpn_key_24px.svg"></md-icon>
+                <input ng-model="vm.password" type="password" name="password">
+            </md-input-container>
+
+        </form>
+
+        <span class="md-caption">You don't have to worry, we will not store your password.</span>
+
+    </md-dialog-content>
+
+    <div class="md-actions">
+
+        <md-button ng-click="vm.singup()" class="md-primary">
+            Signup
+        </md-button>
+        <md-button ng-click="vm.login()" class="md-primary">
+            Login
+        </md-button>
+
+    </div>
+
+</md-dialog>

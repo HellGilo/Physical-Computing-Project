@@ -17,7 +17,7 @@ var conf = {
     },
 
 
-    token_exp : 180,
+    token_exp : 1800,
     token_secret : "this.is.my"
 
 };

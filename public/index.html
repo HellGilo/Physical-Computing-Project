@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <title>Angular Material - Starter App</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css"/>
+    <link rel="stylesheet" href="assets/app.css"/>
+  </head>
+
+  <body ng-app="starterApp" layout="column">
+
+    <md-toolbar layout="row" layout-align="start center" ng-controller="ToolbarController as toolbar">
+      <div class="md-toolbar-tools">
+
+          <md-button class="menu" hide-gt-sm ng-click="toolbar.toggleList()" aria-label="Show User List">
+              <md-icon md-svg-icon="menu" ></md-icon>
+          </md-button>
+
+          <h2>
+              <span>USiBeacon</span>
+          </h2>
+
+          <span flex></span>
+
+          <span>
+            <!--<md-icon md-svg-icon="./assets/svg/avatar-1.svg" class="avatar" "></md-icon>-->
+              <img ng-src="{{toolbar.user.info().avatar}}" class="avatar" />
+          </span>
+
+      </div>
+    </md-toolbar>
+
+    <div flex layout="row" ng-view>
+
+    </div>
+
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/angular-route/angular-route.min.js"></script>
+    <script src="./bower_components/angular-animate/angular-animate.js"></script>
+    <script src="./bower_components/angular-aria/angular-aria.js"></script>
+    <script type="text/javascript" src="./bower_components/angular-material/angular-material.js"></script>
+
+    <script src="./src/users/Users.js"></script>
+    <script src="./src/users/UserController.js"></script>
+    <script src="./src/users/UserService.js"></script>
+
+    <script src="./src/auth/Auth.js"></script>
+    <script src="./src/auth/AuthService.js"></script>
+
+    <script src="./src/utils/utils.js"></script>
+
+    <script src="./src/toolbar/toolbar.js"></script>
+
+    <script src="./src/courses/Courses.js"></script>
+    <script src="./src/courses/CoursesService.js"></script>
+
+    <script type="text/javascript">
+
+          angular
+              .module('starterApp', ['ngRoute', 'ngMaterial', 'users',
+                                     'USiBeacon.auth', 'USiBeacon.toolbar', 'USiBeacon.utils',
+                                     'USiBeacon.courses' ])
+              .config(function($routeProvider, $localStorageProvider, $mdThemingProvider, $mdIconProvider) {
+
+                  $localStorageProvider.setNamespace('USiBeacon');
+
+                  $routeProvider
+                          .when('/home', {
+                              //templateUrl: './src/views/home.html',
+                              templateUrl: './src/courses/view/courses.html',
+                              requiresAuth: true,
+                              controller: 'CoursesController',
+                              controllerAs: 'courseCtrl'
+                          })
+                          .otherwise('/home');
+
+                  $mdIconProvider
+                      .defaultIconSet("./assets/svg/avatars.svg", 128)
+                      .icon("menu"       , "./assets/svg/menu.svg"        , 24)
+                      .icon("share"      , "./assets/svg/share.svg"       , 24)
+                      .icon("google_plus", "./assets/svg/google_plus.svg" , 512)
+                      .icon("hangouts"   , "./assets/svg/hangouts.svg"    , 512)
+                      .icon("twitter"    , "./assets/svg/twitter.svg"     , 512)
+                      .icon("phone"      , "./assets/svg/phone.svg"       , 512);
+
+                  $mdThemingProvider.theme('default')
+                      .primaryPalette('orange')
+                      .accentPalette('red');
+              })
+              .run(function($rootScope, authManager) {
+
+                      authManager.bootstrapCheck();
+
+                      $rootScope.$on("$routeChangeStart", function(event, next, current) {
+                          if(next.requiresAuth && !authManager.isLoggedIn()) {
+                            authManager.promptLogin();
+                          }
+                      });
+              });
+
+    </script>
+
+  </body>
+</html>
