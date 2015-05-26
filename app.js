@@ -26,8 +26,9 @@ app.all('/', function(req, res, next) {
 });
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('views', __dirname + '/views');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -53,13 +54,15 @@ app.all('/*', function(req, res, next) {
 
 app.all('/api/*', [require('./routes/middlewares/validateRequest')]);
 
-app.use('/', routes);
+
 app.use('/login', login);
 app.use('/api/users', users);
 app.use('/api/courses', courses);
 app.use('/api/events', events);
 app.use('/api/presences', presences);
 app.use('/api/rooms', rooms);
+
+app.use('/*', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

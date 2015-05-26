@@ -3,12 +3,14 @@
   <head>
     <title>Angular Material - Starter App</title>
 
+      <base href="/">
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
 
-    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css"/>
     <link rel="stylesheet" href="assets/app.css"/>
   </head>
@@ -66,7 +68,7 @@
               .module('starterApp', ['ngRoute', 'ngMaterial', 'users',
                                      'USiBeacon.auth', 'USiBeacon.toolbar', 'USiBeacon.utils',
                                      'USiBeacon.courses' ])
-              .config(function($routeProvider, $localStorageProvider, $mdThemingProvider, $mdIconProvider) {
+              .config(function($routeProvider, $locationProvider,  $localStorageProvider, $mdThemingProvider, $mdIconProvider) {
 
                   $localStorageProvider.setNamespace('USiBeacon');
 
@@ -79,7 +81,7 @@
                               controllerAs: 'courseCtrl'
                           })
                           .otherwise('/home');
-
+                  $locationProvider.html5Mode(true);
                   $mdIconProvider
                       .defaultIconSet("./assets/svg/avatars.svg", 128)
                       .icon("menu"       , "./assets/svg/menu.svg"        , 24)

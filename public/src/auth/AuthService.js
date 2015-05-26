@@ -15,7 +15,7 @@
      */
     function AuthAPI($http){
 
-        var API = "https://10.62.129.217:4000";
+        var API = "";
 
         this.login = function(username, password) {
             if(username && password) {
