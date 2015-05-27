@@ -2,12 +2,11 @@
     'use strict';
 
     angular.module('USiBeacon.auth')
-        .service('authAPI', ['$http', 'waitingQueue', AuthAPI])
+        .service('authAPI', ['$http', AuthAPI])
         .service('waitingQueue', ['$rootScope', '$q', 'authStatus', WaitingQueue])
-        .service('authManager', ['authStatus', 'loginDialog', '$window', '$localStorage', AuthManager])
-        .factory('authStatus', ['$window', '$localStorage', '$rootScope', AuthStatus])
-        .factory('loginDialog', ['$mdDialog', '$document', 'authAPI', 'authStatus', LoginDialog]);
-
+        .factory('authStatus', ['$localStorage', '$rootScope', AuthStatus])
+        .factory('loginDialog', ['$mdDialog', '$document', 'authAPI', 'authStatus', LoginDialog])
+        .service('authManager', ['authStatus', 'loginDialog', '$localStorage', AuthManager]);
 
     /**
      * Auth DataService
@@ -15,7 +14,7 @@
      * @returns {{loadAll: Function}}
      * @constructor
      */
-    function AuthAPI($http, waitingQueue){
+    function AuthAPI($http){
 
         var API = "";
 
@@ -23,11 +22,6 @@
             if(username && password) {
                 return $http.post(API + '/login', { username: username, password: password });
             }
-        };
-
-        //do I need more than username and password here?
-        this.signup = function(username, password) {
-            //TODO
         };
 
     }
@@ -81,7 +75,7 @@
      * @returns {{loggedIn: boolean, checkLoginStatus: Function}}
      * @constructor
      */
-    function AuthStatus($window, $localStorage, $rootScope) {
+    function AuthStatus($localStorage, $rootScope) {
 
         var auth = {
             loggedIn : false,
@@ -191,7 +185,7 @@
      *
      * @constructor
      */
-    function AuthManager(authStatus, loginDialog, $window, $location, $localStorage) {
+    function AuthManager(authStatus, loginDialog, $location, $localStorage) {
 
         this.promptLogin = function() {
             new loginDialog().prompt()

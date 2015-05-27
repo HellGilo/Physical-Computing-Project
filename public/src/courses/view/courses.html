@@ -12,15 +12,30 @@
 
 <md-content flex layout-align="center center" id="">
 
-    <div ng-if="courseCtrl.selected" flex layout="column" layout-padding style="background-color: #212121;">
+    <div ng-if="courseCtrl.selected" class="course-details" flex layout="column" >
 
-        <h1 style="padding-top: 30px; color: white;">{{courseCtrl.selected.name}}</h1>
+        <div  flex layout="column" class="course-title" layout-padding style="background-color: #212121;">
+            <h1 style="padding-top: 30px; padding-left: 8px;color: white;">{{courseCtrl.selected.name}}</h1>
+        </div>
+
+
+        <div flex class="shadow-box-top course-content" >
+            <md-subheader class="md-no-sticky">Overview</md-subheader>
+
+            <div flex layout="row" layout-padding>
+                <div flex>ciao</div>
+                <div flex>come</div>
+                <div flex>stai</div>
+            </div>
+
+            <md-subheader class="md-no-sticky md-a">Lectures</md-subheader>
+
+
+        </div>
+
 
     </div>
 
-    <div flex class="shadow-box-top">
-        Ciao ciao
-    </div>
 
     <div ng-if="!courseCtrl.courses.length" flex layout="column" layout-align="center center" >
         <h1 style="text-align: center; color: #BDBDBD;">

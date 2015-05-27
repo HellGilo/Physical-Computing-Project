@@ -45,6 +45,7 @@
             function(courses) {
                 console.log('asked for courses')
                 this.courses = courses;
+                this.selected = this.courses[0];
             }.bind(this)
         )
 
