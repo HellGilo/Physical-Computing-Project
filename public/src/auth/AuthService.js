@@ -2,10 +2,12 @@
     'use strict';
 
     angular.module('USiBeacon.auth')
-        .service('authAPI', ['$http', AuthAPI])
-        .factory('authStatus', ['$window', '$localStorage', AuthStatus])
-        .factory('loginDialog', ['$mdDialog', '$document', 'authAPI', 'authStatus', LoginDialog])
-        .service('authManager', ['authStatus', 'loginDialog', '$window', '$localStorage', AuthManager]);
+        .service('authAPI', ['$http', 'waitingQueue', AuthAPI])
+        .service('waitingQueue', ['$rootScope', '$q', 'authStatus', WaitingQueue])
+        .service('authManager', ['authStatus', 'loginDialog', '$window', '$localStorage', AuthManager])
+        .factory('authStatus', ['$window', '$localStorage', '$rootScope', AuthStatus])
+        .factory('loginDialog', ['$mdDialog', '$document', 'authAPI', 'authStatus', LoginDialog]);
+
 
     /**
      * Auth DataService
@@ -13,13 +15,12 @@
      * @returns {{loadAll: Function}}
      * @constructor
      */
-    function AuthAPI($http){
+    function AuthAPI($http, waitingQueue){
 
         var API = "";
 
         this.login = function(username, password) {
             if(username && password) {
-                //this should post and set loggedIn accordingly
                 return $http.post(API + '/login', { username: username, password: password });
             }
         };
@@ -28,6 +29,50 @@
         this.signup = function(username, password) {
             //TODO
         };
+
+    }
+
+    /**
+     *
+     * This service enqueues API requests that require auth if
+     * the user is not logged in, and resolves them once the user is
+     * authenticated
+     * @constructor
+     */
+    function WaitingQueue($rootScope, $q, authStatus) {
+
+        var queue = [];
+
+        this.apiCall = function(fn, self, params) {
+            if(authStatus.loggedIn) {
+                return fn.call(self, params);
+            } else {
+                var deferred = $q.defer();
+                queue.push({
+                    deferred: deferred,
+                    fn: fn,
+                    self: self,
+                    params: params
+                });
+                return deferred.promise;
+            }
+        }
+
+        var resolveApiCall = function(ac) {
+            return ac.fn.call(ac.self, ac.params)
+                        .then(
+                            function(value) { ac.deferred.resolve(value); },
+                            function(reason) { ac.deferred.reject(reason); }
+                        );
+        }
+
+        $rootScope.$on(
+            'USiBeacon.loggedInEvent',
+            function(userData) {
+                queue.forEach(resolveApiCall);
+            }
+        );
+
     }
 
     /**
@@ -36,7 +81,7 @@
      * @returns {{loggedIn: boolean, checkLoginStatus: Function}}
      * @constructor
      */
-    function AuthStatus($window, $localStorage) {
+    function AuthStatus($window, $localStorage, $rootScope) {
 
         var auth = {
             loggedIn : false,
@@ -44,37 +89,32 @@
 
                 var lastToken = $localStorage.get('token');
                 var userData = $localStorage.get('userData');
-                //var lastToken = $window.localStorage.getItem('USiBeaconToken');
-                //var userData = $window.localStorage.getItem('USiBeaconUserData');
 
                 if(lastToken && userData) {
 
                     this.loggedIn = true;
                     this.user = userData;
+                    $rootScope.$emit('USiBeacon.loggedInEvent', userData);
 
-                    //console.log(this.loggedIn);
-                    //console.log(this.user);
                 } else {
                     this.isLogged = false;
                     delete this.user;
                 }
             },
             set: function(res) {
-                console.log('Response: ', res);
-                this.user = {
+
+                $localStorage.set('token', res.user.token);
+                $localStorage.set('userData', {
                     firstname : res.user.firstname,
                     lastname: res.user.lastname,
                     avatar: res.user.avatar,
                     email: res.user.email,
-                    role: res.user.role
-                };
-                //$window.localStorage['USiBeaconToken'] = res.user.token;
-                //$window.localStorage['USiBeaconUserData'] = this.user;
+                    role: res.user.role,
+                    id: res.user.id
+                });
 
-                $localStorage.set('token', res.user.token);
-                $localStorage.set('userData', this.user);
-
-                this.loggedIn = true;
+                //this.loggedIn = true;
+                this.checkLoginStatus();
             }
         }
 
@@ -102,29 +142,29 @@
 
                     this.username;
                     this.password;
+                    this.loading = false;
 
                     this.login = function() {
-                        console.log(this.username, this.password);
                         if(!this.username || !this.password) {
                             alert('Insert username and password.');
                             return;
                         };
+                        this.loading = true;
                         authAPI.login(this.username, this.password)
                                 .then(
                                     function(res) {
+                                        console.log(res)
                                         authStatus.set(res.data);
+                                        this.loading = false;
                                         return $mdDialog.hide();
-                                    },
+                                    }.bind(this),
                                     function(err) {
+                                        this.loading = false;
                                         alert('There was an error processing your request. Please try again.')
-                                    }
+                                    }.bind(this)
                                 );
                     }.bind(this);
 
-
-                    this.signup = function() {
-                        //TODO: move to signup page
-                    }
                 }
             }
         }
@@ -168,8 +208,6 @@
         this.isLoggedIn = function() { return authStatus.loggedIn; };
 
         this.logout = function() {
-            //delete $window.localStorage['USiBeaconToken'];
-            //delete $window.localStorage['USiBeaconUserData'];
             $localStorage.removeItem('token');
             $localStorage.removeItem('userData');
             authStatus.checkLoginStatus();

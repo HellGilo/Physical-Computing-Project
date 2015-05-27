@@ -30,9 +30,7 @@
 
     <div class="md-actions">
 
-        <md-button ng-click="vm.singup()" class="md-primary">
-            Signup
-        </md-button>
+        <md-progress-circular ng-show="vm.loading" md-diameter="20" md-mode="indeterminate"></md-progress-circular>
         <md-button ng-click="vm.login()" class="md-primary">
             Login
         </md-button>

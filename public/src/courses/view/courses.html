@@ -10,21 +10,28 @@
     </md-list>
 </md-sidenav>
 
-<md-content flex layout-align="center center" id="content">
+<md-content flex layout-align="center center" id="">
 
-    <div ng-if="courseCtrl.selected" flex layout="column">
+    <div ng-if="courseCtrl.selected" flex layout="column" layout-padding style="background-color: #212121;">
 
-        <h1>{{courseCtrl.selected.name}}</h1>
+        <h1 style="padding-top: 30px; color: white;">{{courseCtrl.selected.name}}</h1>
 
     </div>
 
-    <div ng-if="!courseCtrl.courses.length" flex layout="column" layout-align="center center">
+    <div flex class="shadow-box-top">
+        Ciao ciao
+    </div>
+
+    <div ng-if="!courseCtrl.courses.length" flex layout="column" layout-align="center center" >
         <h1 style="text-align: center; color: #BDBDBD;">
-            You are not enrolled in any course! Think about what you are doing with your life.
+            Your list of courses will be displayed here.
         </h1>
     </div>
 
-    <md-content flex layout="column" layout-align="center center" ng-if="!courseCtrl.selected" style="height: 100%">
+
+
+    <md-content flex layout="column" layout-align="center center"
+                ng-if="courseCtrl.courses.length && !courseCtrl.selected" style="height: 100%;">
         <md-icon md-svg-src="./assets/svg/ic_school_24px.svg" style="color: #BDBDBD; height:300px; width:300px;"></md-icon>
         <h1 style="color: #BDBDBD;">Select a course to see more info.</h1>
     </md-content>
