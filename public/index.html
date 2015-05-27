@@ -104,7 +104,7 @@
                               'default' : '800'
                           });
 
-                  $httpProvider.interceptors.push(function($localStorage, $q, $rootScope) {
+                  $httpProvider.interceptors.push(function($localStorage, $q, $rootScope, authStatus) {
                       return {
                           request: function(req) {
                               //console.log(req.url);
@@ -116,6 +116,9 @@
                           responseError: function(rejection) {
                               if(rejection.status == 401) {
                                   console.error('Unauthorized request intercepted.');
+                                  $localStorage.removeItem('token');
+                                  $localStorage.removeItem('userData');
+                                  authStatus.checkLoginStatus();
                                   $rootScope.$emit('USiBeacon.unathorizedAPICallEvent');
                               }
                               return $q.reject(rejection);
