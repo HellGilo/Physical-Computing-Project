@@ -21,10 +21,10 @@ router.get('/:id', function(req, res, next) {
     var id = req.params.id;
 
     var populate = [
-        { path: "_courses", select: "name"}
+        { path: "_courses", select: "name _lecturer _assistant _schedule"}
     ];
 
-    User.find( { $or: [ { id: id }, { email: id}, {username : id} ] }, {_id : 0, __v : 0, token : 0}).populate(populate).exec(function (err, user) {
+    User.findOne( { $or: [ { id: id }, { email: id}, {username : id} ] }, {_id : 0, __v : 0, token : 0}).populate(populate).exec(function (err, user) {
         if (err) {
             res.status(500);
             return res.send("error 500" + err.message);
@@ -33,7 +33,24 @@ router.get('/:id', function(req, res, next) {
             res.status(404);
             return res.send("error 404" + err.message);
         }
-        res.send(user);
+
+                User.populate(user._courses, {
+                    path: '_lecturer',
+                    select: 'firstname lastname'
+                },  function() {
+                    User.populate(user._courses, {
+                        path: '_assistants',
+                        select: 'firstname lastname'
+                    },  function() {
+                        res.json(user);
+
+                    })
+                });
+
+
+
+
+
     });
 
     // TODO - for anyone

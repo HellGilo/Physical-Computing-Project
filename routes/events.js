@@ -23,7 +23,8 @@ router.get('/', function(req, res, next) {
 router.get('/:eid', function(req, res, next) {
     var populate = [
         { path: "_course", select: "name"},
-        {path : "_presences", select : "_user arrival exit"}
+        {path : "_presences", select : "_user arrival exit"},
+        {path : "_room", select : "name"}
     ];
 
     Event.findOne({_id : req.params.eid }).populate(populate).exec(function (err, event) {

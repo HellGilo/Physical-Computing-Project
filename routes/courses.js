@@ -12,7 +12,7 @@ var Auth = require('./utils/auth');
 var User = require('../models/user');
 var Event = require('../models/event');
 var Room = require('../models/room');
-
+var Presences = require('../models/presence');
 
 /* GET home page for courses  */
 router.get('/', function(req, res, next) {
@@ -43,7 +43,7 @@ router.get('/:cid', function(req, res, next) {
         { path: "_lecturer", select: "firstname lastname avatar email"},
         { path: "_assistants", select: "firstname lastname avatar email"},
         { path: "_students", select: " firstname lastname avatar email"},
-        { path: "_schedule", select: " name start end _room"}
+        { path: "_schedule", select: " name start end _room _presences"}
     ];
 
     Course.findOne({_id : req.params.cid }).populate(populate).exec(function (err, course) {
@@ -60,8 +60,24 @@ router.get('/:cid', function(req, res, next) {
             path: '_schedule._room',
             select: 'name'
         },  function() {
-            res.status(200);
-            return res.json(course)
+
+            Presences.populate(course, {
+                path: '_schedule._presences',
+                select: '_user arrival exit'
+            },  function() {
+
+                User.populate(course, {
+                    path: '_schedule._presences._user',
+                    select: 'firstname lastname'
+                },  function() {
+                    res.status(200);
+                    return res.json(course)
+                });
+
+            });
+
+
+
 
         });
     });
