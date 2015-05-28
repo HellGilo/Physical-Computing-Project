@@ -10,6 +10,10 @@ html, body {
   box-shadow: 0 -3px 1px -2px rgba(0,0,0,.2);
 }
 
+.timeline-badge {
+  z-index: 0 !important;
+}
+
 .timeline-badge.usibeacon {
   background-color:#FF9800 !important;
 }
@@ -17,6 +21,7 @@ html, body {
 .timeline-badge.usibeacon.upcoming {
   background-color: #FFCC80 !important;
 }
+
 
 /*
 IMPORTANT:

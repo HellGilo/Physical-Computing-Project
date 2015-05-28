@@ -40,9 +40,9 @@
             </md-toolbar>
 
             <div flex layout="row" layout-padding>
-                <div flex>ciao</div>
-                <div flex>come</div>
-                <div flex>stai</div>
+                <div flex>{{courseCtrl.selected.details.attendedAmount}}% lectures attended.</div>
+                <div flex>{{courseCtrl.selected.details.schedule.length}} lectures total.</div>
+                <div flex>{{courseCtrl.selected.details.upcomingAmount}} lectures upcoming.</div>
             </div>
 
             <md-toolbar>
@@ -56,8 +56,9 @@
 
                 <timeline-node ng-repeat="lecture in courseCtrl.selected.details.schedule track by lecture._id"
                                side={{courseCtrl.getSide($index)}}>
-                    <timeline-badge class="usibeacon">
-                        <i ng-if="courseCtrl.wasPresentAt(lecture)" class="glyphicon glyphicon-check"></i>
+                    <timeline-badge class="usibeacon" ng-class="{ upcoming: courseCtrl.isUpcoming(lecture) }">
+                        <md-icon style="color: white;" ng-if="courseCtrl.wasPresentAt(lecture)"
+                                 md-svg-src="./assets/svg/ic_done_48px.svg"></md-icon>
                     </timeline-badge>
                     <timeline-panel>
                         <timeline-heading>
@@ -65,13 +66,13 @@
                             <p>
                                 <small class="text-muted">
                                     <md-icon style="height:12px; width:12px;" md-svg-src="./assets/svg/ic_event_24px.svg"></md-icon>
-                                    {{ lecture.start | date}}
+                                    {{ lecture.start | date}} ({{lecture._room.name | uppercase}})
                                 </small>
                             </p>
                         </timeline-heading>
                         <timeline-content>
-                            <p ng-if="lecture.description">{{lecture.description}}</p>
-                            <p ng-if="!lecture.description">No further info currently available.</p>
+                            <!--<p ng-if="lecture.description">{{lecture.description}}</p>-->
+                            <!--<p ng-if="!lecture.description">No further info currently available.</p>-->
                         </timeline-content>
                     </timeline-panel>
                 </timeline-node>

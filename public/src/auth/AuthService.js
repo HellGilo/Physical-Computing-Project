@@ -107,7 +107,6 @@
                     id: res.user.id
                 });
 
-                //this.loggedIn = true;
                 this.checkLoginStatus();
             }
         }

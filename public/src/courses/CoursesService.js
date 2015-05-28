@@ -31,8 +31,6 @@
 
     }
 
-
-
     function CoursesController($mdBottomSheet, $mdSidenav, $rootScope, $q, coursesAPI, authStatus) {
 
         this.courses = [];
@@ -41,14 +39,15 @@
 
         coursesAPI.getCourses()
             .then(function(userData) {
+                authStatus.user.dbId = userData.data._id;
                 var coursesList = userData.data._courses;
-                //console.log(coursesList);
                 this.courses = coursesList;
 
                 coursesList.forEach(function(course) {
                     delete course._schedule;
                 })
                 //this.selected = this.courses[0];
+                this.selectCourse(0);
                 return this.courses;
             }.bind(this));
 
@@ -69,6 +68,9 @@
                             students: details.data._students
                         }
 
+                        this.selected.details.attendedAmount = attendedLectures(this.selected);
+                        this.selected.details.upcomingAmount = upcomingLectures(this.selected);
+                        //console.log(this.selected);
                     }.bind(this))
             }
 
@@ -76,24 +78,59 @@
 
         }.bind(this);
 
+        var upcomingLectures = function(course) {
+
+            return course.details.schedule.filter(
+                function(lecture) {
+                    return new Date(lecture.start) >= new Date() ? true : false;
+                }
+            ).length;
+
+        }
+
+        var attendedLectures = function(course) {
+            var lectureDetails = course.details;
+            var lectures = lectureDetails.schedule;
+            var total = lectures.length;
+            var attended = lectures.filter(function(lecture) {
+                var presences = lecture._presences;
+                for(var i=0; i<presences.length; i++) {
+                    if(authStatus.user.dbId == presences[i]._user._id) {
+                        return true;
+                    }
+                }
+                return false;
+            }).length;
+
+            console.log(attended);
+            console.log(total);
+
+            return attended/total * 100;
+
+        }
+
         this.wasPresentAt = function(lecture) {
             var user = authStatus.user;
             var startDate = lecture.start;
 
-            //console.log(startDate);
+            for(var i =0; i < lecture._presences.length; i++) {
+                var current = lecture._presences[i];
+                if(authStatus.user.dbId == current._user._id) {
+                    return true;
+                }
+            }
+            return false;
 
-            if(new Date(startDate) < new Date()) {
+        }
+
+        this.isUpcoming = function(lecture) {
+            var startDate = lecture.start;
+
+            if(new Date(startDate) >= new Date()) {
                 return true;
             }
 
             return false;
-
-            //for(var i =0; i < lecture._presences.length; i++) {
-            //    var current = lecture._presences[i];
-            //    //check if I am among the presences and eventually return true
-            //}
-            //return true;
-
         }
 
         this.getSide = function(index) {
