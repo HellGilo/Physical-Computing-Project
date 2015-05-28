@@ -78,12 +78,21 @@
 
         this.wasPresentAt = function(lecture) {
             var user = authStatus.user;
+            var startDate = lecture.start;
 
-            for(var i =0; i < lecture._presences.length; i++) {
-                var current = lecture._presences[i];
-                //check if I am among the presences and eventually return true
+            //console.log(startDate);
+
+            if(new Date(startDate) < new Date()) {
+                return true;
             }
-            return true;
+
+            return false;
+
+            //for(var i =0; i < lecture._presences.length; i++) {
+            //    var current = lecture._presences[i];
+            //    //check if I am among the presences and eventually return true
+            //}
+            //return true;
 
         }
 
