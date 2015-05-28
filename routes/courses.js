@@ -43,7 +43,7 @@ router.get('/:cid', function(req, res, next) {
         { path: "_lecturer", select: "firstname lastname avatar email"},
         { path: "_assistants", select: "firstname lastname avatar email"},
         { path: "_students", select: " firstname lastname avatar email"},
-        { path: "_schedule", select: " name start end _room _presences"}
+        { path: "_schedule", select: " name start end _room _presences",  options: { sort: { 'start': 1 } } }
     ];
 
     Course.findOne({_id : req.params.cid }).populate(populate).exec(function (err, course) {
