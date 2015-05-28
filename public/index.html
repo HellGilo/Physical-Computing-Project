@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" >
   <head>
-    <title>Angular Material - Starter App</title>
+    <title>USiBeacon - Dashboard</title>
 
-      <base href="/">
+    <base href="/">
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,8 +25,8 @@
               <md-icon md-svg-icon="menu" ></md-icon>
           </md-button>
 
-          <h2>
-              <span>USiBeacon</span>
+          <h2 class="md-accent">
+              <strong style="color: #EF6C00;" class="md-accent">USiBeacon</strong>
           </h2>
 
           <span flex></span>
@@ -69,7 +69,8 @@
               .module('starterApp', ['ngRoute', 'ngMaterial', 'users',
                                      'USiBeacon.auth', 'USiBeacon.toolbar', 'USiBeacon.utils',
                                      'USiBeacon.courses' ])
-              .config(function($routeProvider, $locationProvider,  $localStorageProvider, $mdThemingProvider, $mdIconProvider) {
+              .config(function($routeProvider, $locationProvider,  $localStorageProvider,
+                               $mdThemingProvider, $mdIconProvider, $httpProvider) {
 
                   $localStorageProvider.setNamespace('USiBeacon');
 
@@ -92,9 +93,39 @@
                       .icon("twitter"    , "./assets/svg/twitter.svg"     , 512)
                       .icon("phone"      , "./assets/svg/phone.svg"       , 512);
 
+
                   $mdThemingProvider.theme('default')
-                      .primaryPalette('orange')
-                      .accentPalette('red');
+                      .primaryPalette('grey', {
+                              'default': '200', // by default use shade 400 from the pink palette for primary intentions
+                              'hue-1': '100', // use shade 100 for the <code>md-hue-1</code> class
+                              'hue-2': '300', // use shade 600 for the <code>md-hue-2</code> class
+                              'hue-3': 'A100' // use shade A100 for the <code>md-hue-3</code> class
+                          })
+                      .accentPalette('orange', {
+                              'default' : '800'
+                          });
+
+                  $httpProvider.interceptors.push(function($localStorage, $q, $rootScope, authStatus) {
+                      return {
+                          request: function(req) {
+                              //console.log(req.url);
+                              if(req.url.startsWith('/api')) {
+                                  req.headers['x-access-token'] = $localStorage.get('token');
+                              }
+                              return req;
+                          },
+                          responseError: function(rejection) {
+                              if(rejection.status == 401) {
+                                  console.error('Unauthorized request intercepted.');
+                                  $localStorage.removeItem('token');
+                                  $localStorage.removeItem('userData');
+                                  authStatus.checkLoginStatus();
+                                  $rootScope.$emit('USiBeacon.unathorizedAPICallEvent');
+                              }
+                              return $q.reject(rejection);
+                          }
+                      }
+                  })
               })
               .run(function($rootScope, authManager) {
 
@@ -104,6 +135,10 @@
                           if(next.requiresAuth && !authManager.isLoggedIn()) {
                             authManager.promptLogin();
                           }
+                      });
+
+                      $rootScope.$on('USiBeacon.unathorizedAPICallEvent', function() {
+                         authManager.promptLogin();
                       });
               });
 

@@ -6,25 +6,48 @@
     angular.module('USiBeacon.courses')
 
     //courses as a service or as a resource?
+        .service('coursesAPI', ['waitingQueue', '$timeout', CoursesAPI])
+        .controller('CoursesController', ['$mdBottomSheet', '$mdSidenav', '$rootScope', '$q', 'coursesAPI', CoursesController]);
 
-        .controller('CoursesController', ['$mdBottomSheet', '$mdSidenav', '$rootScope', '$q', CoursesController]);
+    function CoursesAPI(waitingQueue, $timeout) {
 
-    function CoursesController($mdBottomSheet, $mdSidenav, $rootScope, $q) {
+        var getCourses = function() {
+            return $timeout(function() {
+                return [
+                    {
+                        _id: 1234,
+                        name: "Quantum Computing"
+                    },
+                    {
+                        _id: 5678,
+                        name: "Physical Computing"
+                    }
+                ];
+            }, 2000);
+        }
 
-        this.courses = [
-            {
-                _id: 1234,
-                name: "Quantum Computing"
-            },
-            {
-                _id: 5678,
-                name: "Physical Computing"
-            }
-        ];
+        this.getCourses = function() {
+            console.log('trying to get courses')
+            return waitingQueue.apiCall(getCourses);
+        }
 
-        //this.selected = this.courses[0];
+    }
+
+
+
+    function CoursesController($mdBottomSheet, $mdSidenav, $rootScope, $q, coursesAPI) {
+
+        this.courses = [];
+
         this.selected;
 
+        coursesAPI.getCourses().then(
+            function(courses) {
+                console.log('asked for courses')
+                this.courses = courses;
+                this.selected = this.courses[0];
+            }.bind(this)
+        )
 
         this.selectCourse = function(course) {
             this.selected = angular.isNumber(course) ? this.courses[course] : course;

@@ -10,13 +10,13 @@
 
         <form name="loginForm">
 
-            <md-input-container class="with-md-icon">
+            <md-input-container class="with-md-icon md-accent">
                 <label>netID@usi.ch</label>
                 <md-icon md-svg-src="./assets/svg/ic_email_24px.svg"></md-icon>
                 <input ng-model="vm.username" type="email" name="netID">
             </md-input-container>
 
-            <md-input-container class="with-md-icon">
+            <md-input-container class="with-md-icon md-accent">
                 <label>Password</label>
                 <md-icon md-svg-src="./assets/svg/ic_vpn_key_24px.svg"></md-icon>
                 <input ng-model="vm.password" type="password" name="password">
@@ -30,10 +30,8 @@
 
     <div class="md-actions">
 
-        <md-button ng-click="vm.singup()" class="md-primary">
-            Signup
-        </md-button>
-        <md-button ng-click="vm.login()" class="md-primary">
+        <md-progress-circular class="md-accent" ng-show="vm.loading" md-diameter="20" md-mode="indeterminate"></md-progress-circular>
+        <md-button ng-click="vm.login()" class="md-accent">
             Login
         </md-button>
 
