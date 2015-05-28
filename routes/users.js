@@ -24,7 +24,7 @@ router.get('/:id', function(req, res, next) {
         { path: "_courses", select: "name _lecturer _assistant _schedule"}
     ];
 
-    User.findOne( { $or: [ { id: id }, { email: id}, {username : id} ] }, {_id : 0, __v : 0, token : 0}).populate(populate).exec(function (err, user) {
+    User.findOne( { $or: [ { id: id }, { email: id}, {username : id} ] }, {__v : 0, token : 0}).populate(populate).exec(function (err, user) {
         if (err) {
             res.status(500);
             return res.send("error 500" + err.message);
