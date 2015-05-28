@@ -6,6 +6,7 @@
                 <img src="./assets/img/usi-fields/cs.png" class="avatar"/>
                 {{course.name}}
             </md-button>
+
         </md-item>
     </md-list>
 </md-sidenav>
@@ -14,13 +15,29 @@
 
     <div ng-if="courseCtrl.selected" class="course-details" flex layout="column" >
 
-        <div  flex layout="column" class="course-title" layout-padding style="background-color: #212121;">
-            <h1 style="padding-top: 30px; padding-left: 8px;color: white;">{{courseCtrl.selected.name}}</h1>
-        </div>
-
+        <md-toolbar style="background-color:#212121;" class="md-tall">
+            <span flex></span>
+            <div class="md-toolbar-tools md-toolbar-tools-bottom">
+                <h1 class="md-flex md-display-3" style="color: white">
+                    {{courseCtrl.selected.name | capitalize}}
+                    <span class="md-subhead"
+                          ng-repeat="lecturer in courseCtrl.selected._lecturer track by lecturer._id">
+                        <span ng-if="$first">(</span>
+                            {{lecturer.firstname}} {{lecturer.lastname}}
+                        <span ng-if="!$last">, </span>
+                        <span ng-if="$last">)</span>
+                    </span>
+                </h1>
+            </div>
+        </md-toolbar>
 
         <div flex class="shadow-box-top course-content" >
-            <md-subheader class="md-no-sticky">Overview</md-subheader>
+
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    Overview
+                </div>
+            </md-toolbar>
 
             <div flex layout="row" layout-padding>
                 <div flex>ciao</div>
@@ -28,8 +45,57 @@
                 <div flex>stai</div>
             </div>
 
-            <md-subheader class="md-no-sticky md-a">Lectures</md-subheader>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    Lectures
+                </div>
+            </md-toolbar>
 
+
+            <timeline>
+
+                <timeline-node ng-repeat="lecture in courseCtrl.selected.details.schedule track by lecture._id"
+                               side="left" ng-if="$index % 2 == 0">
+                    <timeline-badge class="usibeacon">
+                        <i ng-if="courseCtrl.wasPresentAt(lecture)" class="glyphicon glyphicon-check"></i>
+                    </timeline-badge>
+                    <timeline-panel>
+                        <timeline-heading>
+                            <timeline-title>{{lecture.name | capitalize }}</timeline-title>
+                            <p>
+                                <small class="text-muted">
+                                    <md-icon style="height:12px; width:12px;" md-svg-src="./assets/svg/ic_event_24px.svg"></md-icon>
+                                    {{ lecture.start | date}}
+                                </small>
+                            </p>
+                        </timeline-heading>
+                        <timeline-content>
+                            <p ng-if="lecture.description">{{lecture.description}}</p>
+                            <p ng-if="!lecture.description">No further info currently available.</p>
+                        </timeline-content>
+                    </timeline-panel>
+                </timeline-node>
+                <timeline-node ng-repeat="lecture in courseCtrl.selected.details.schedule track by lecture._id"
+                               side="left" ng-if="!($index % 2 == 0)">
+                    <timeline-badge class="usibeacon">
+                        <md-icon style="color: white;" md-svg-src="./assets/svg/ic_done_48px.svg"></md-icon>
+                    </timeline-badge>
+                    </timeline-badge>
+                    <timeline-panel>
+                        <timeline-heading>
+                            <timeline-title>Lecture 2</timeline-title>
+                            <p>
+                                <small class="text-muted">Yet another date</small>
+                            </p>
+                        </timeline-heading>
+                        <timeline-content>
+                            <p>Lecture info goes here</p>
+                        </timeline-content>
+                    </timeline-panel>
+                </timeline-node>
+
+
+            </timeline>
 
         </div>
 

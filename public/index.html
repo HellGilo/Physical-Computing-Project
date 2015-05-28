@@ -13,19 +13,20 @@
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css"/>
     <link rel="stylesheet" href="assets/app.css"/>
+    <link rel="stylesheet" href="./bower_components/angular-timeline/dist/angular-timeline.css" />
   </head>
 
   <body ng-app="starterApp" layout="column">
 
-    <md-toolbar layout="row" layout-align="start center" ng-controller="ToolbarController as toolbar">
+    <md-toolbar class="md-accent" layout="row" layout-align="start center" ng-controller="ToolbarController as toolbar">
       <div class="md-toolbar-tools">
 
-          <md-button class="menu" hide-gt-sm ng-click="toolbar.toggleList()" aria-label="Show User List">
-              <md-icon md-svg-icon="menu" ></md-icon>
+          <md-button style="padding-left: 0px;" class="menu" hide-gt-sm ng-click="toolbar.toggleList()" aria-label="Show User List">
+              <md-icon md-svg-icon="menu" style="color:white;" ></md-icon>
           </md-button>
 
           <h2 class="md-accent">
-              <strong style="color: #EF6C00;" class="md-accent">USiBeacon</strong>
+              <strong style="color: white;" class="md-accent">USiBeacon</strong>
           </h2>
 
           <span flex></span>
@@ -47,6 +48,7 @@
     <script src="./bower_components/angular-animate/angular-animate.js"></script>
     <script src="./bower_components/angular-aria/angular-aria.js"></script>
     <script type="text/javascript" src="./bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-timeline/dist/angular-timeline.js"></script>
 
     <script src="./src/users/Users.js"></script>
     <script src="./src/users/UserController.js"></script>
@@ -62,10 +64,12 @@
     <script src="./src/courses/Courses.js"></script>
     <script src="./src/courses/CoursesService.js"></script>
 
+
+
     <script type="text/javascript">
 
           angular
-              .module('starterApp', ['ngRoute', 'ngMaterial', 'users',
+              .module('starterApp', ['ngRoute', 'ngMaterial', 'users', 'angular-timeline',
                                      'USiBeacon.auth', 'USiBeacon.toolbar', 'USiBeacon.utils',
                                      'USiBeacon.courses' ])
               .config(function($routeProvider, $locationProvider,  $localStorageProvider,
@@ -101,7 +105,7 @@
                               'hue-3': 'A100' // use shade A100 for the <code>md-hue-3</code> class
                           })
                       .accentPalette('orange', {
-                              'default' : '800'
+                              'default' : '600',
                           });
 
                   $httpProvider.interceptors.push(function($localStorage, $q, $rootScope, authStatus) {
