@@ -17,7 +17,7 @@ var Presences = require('../models/presence');
 /* GET home page for courses  */
 router.get('/', function(req, res, next) {
 
-    Course.find({}).exec(function(err, courses){
+    Course.find({}).populate({path: "_lecturer", select : "firstname lastname"}).exec(function(err, courses){
 
         if (err) {
             res.status(500);

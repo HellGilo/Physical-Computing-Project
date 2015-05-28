@@ -12,18 +12,6 @@
     function CoursesAPI(waitingQueue, authStatus, $http) {
 
         var getCourses = function() {
-            //return $timeout(function() {
-            //    return [
-            //        {
-            //            _id: 1234,
-            //            name: "Quantum Computing"
-            //        },
-            //        {
-            //            _id: 5678,
-            //            name: "Physical Computing"
-            //        }
-            //    ];
-            //}, 2000);
             return $http.get('/api/users/' + authStatus.user.id);
         }
 
@@ -97,6 +85,10 @@
             }
             return true;
 
+        }
+
+        this.getSide = function(index) {
+            return index%2 == 0? 'left' : 'right';
         }
 
         this.toggleCoursesList = function() {

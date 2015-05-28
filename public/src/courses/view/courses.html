@@ -55,7 +55,7 @@
             <timeline>
 
                 <timeline-node ng-repeat="lecture in courseCtrl.selected.details.schedule track by lecture._id"
-                               side="left" ng-if="$index % 2 == 0">
+                               side={{courseCtrl.getSide($index)}}>
                     <timeline-badge class="usibeacon">
                         <i ng-if="courseCtrl.wasPresentAt(lecture)" class="glyphicon glyphicon-check"></i>
                     </timeline-badge>
@@ -75,24 +75,24 @@
                         </timeline-content>
                     </timeline-panel>
                 </timeline-node>
-                <timeline-node ng-repeat="lecture in courseCtrl.selected.details.schedule track by lecture._id"
-                               side="left" ng-if="!($index % 2 == 0)">
-                    <timeline-badge class="usibeacon">
-                        <md-icon style="color: white;" md-svg-src="./assets/svg/ic_done_48px.svg"></md-icon>
-                    </timeline-badge>
-                    </timeline-badge>
-                    <timeline-panel>
-                        <timeline-heading>
-                            <timeline-title>Lecture 2</timeline-title>
-                            <p>
-                                <small class="text-muted">Yet another date</small>
-                            </p>
-                        </timeline-heading>
-                        <timeline-content>
-                            <p>Lecture info goes here</p>
-                        </timeline-content>
-                    </timeline-panel>
-                </timeline-node>
+                <!--<timeline-node ng-repeat="lecture in courseCtrl.selected.details.schedule track by lecture._id"-->
+                               <!--side="right" ng-if="!($index % 2 == 0)">-->
+                    <!--<timeline-badge class="usibeacon">-->
+                        <!--<md-icon style="color: white;" md-svg-src="./assets/svg/ic_done_48px.svg"></md-icon>-->
+                    <!--</timeline-badge>-->
+                    <!--</timeline-badge>-->
+                    <!--<timeline-panel>-->
+                        <!--<timeline-heading>-->
+                            <!--<timeline-title>Lecture 2</timeline-title>-->
+                            <!--<p>-->
+                                <!--<small class="text-muted">Yet another date</small>-->
+                            <!--</p>-->
+                        <!--</timeline-heading>-->
+                        <!--<timeline-content>-->
+                            <!--<p>Lecture info goes here</p>-->
+                        <!--</timeline-content>-->
+                    <!--</timeline-panel>-->
+                <!--</timeline-node>-->
 
 
             </timeline>
