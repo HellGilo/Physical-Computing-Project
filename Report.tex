@@ -7,13 +7,44 @@
 								% TeX will automatically convert eps --> pdf in pdflatex		
 \usepackage{amssymb}
 
+\newcommand{\UB}{USiBeacon} %Use "\UB\" to insert USiBeacon.
+
 \title{USiBeacon}
 \author{Ciani Andrea, D'Avico Simone, Gili Daniele}
 %\date{}							% Activate to display a given date or no date
 
 \begin{document}
 \maketitle
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[scale=0.5]{img/logo.png}
+\end{center}
+\end{figure}
 
+\pagebreak
+\tableofcontents
+
+% 1. Introduction/ Motivation Scenario
+
+% 2. Prototype Description
+
+% 3. Detailed Hardware & Software Description
+\include{3-iBeacon}
+\pagebreak
+
+\include{3-IndoorLocalisation}
+\pagebreak
+
+\include{3.1-Estimote}
+\pagebreak
+% 4. Measurements & Results
+\include{4-Dashboard}
+\pagebreak
+
+\include{4-iPhoneApp}
+\pagebreak
+
+% 5. Reflections/ Discussion
 
 
 \end{document}  
