@@ -1,2 +1,6 @@
 node_modules
 .idea
+.aux
+.gz
+.log
+.toc

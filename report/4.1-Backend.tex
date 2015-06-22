@@ -1,1 +1,31 @@
-\section{The Dashboard}
+\section{Backend}
+
+\subsection{Server}
+As always, for a good application, a good backend is needed. \\
+In our case, we decided to build it over the Nodejs platform, which we had used many times before, together with the Expressjs framework, which allowed us to build what we needed rapidly and easily.\\
+Since we are working with sensitive data, we built the server in order to work with the HTTPs protocol and made sure to create authentication and authorisation middleware based on tokens in order to ensure the safety of this data. All the requests to the database are also made through our server only, which made the DB secure enough for the demo we had to build.
+
+\subsection{Database}
+The choice for the Database went to MongoDB, as it is easy to implement with Nodejs and, again, we had already used it before for other works. Through the module of Mongoosejs, creating all the Schema we needed was just a matter of minutes, where the biggest problem was just to decide which fields we needed for each document in the DB.\\
+Unfortunately, we couldn't use any of the data present in the Moodle database, as it would have violated the privacy of the users registered there. To overcome the problem, we asked for help to the Icorsi developers here at USI, which gladly helped us by providing a Backend route to call in order to obtain a small subset of the data of a defined (and authenticated) user.\\
+Given this, we could actually build the rest of the Database Documents that best reflected our needs, ending up with the following:\\
+\begin{itemize}
+\item User - Schema representing either a student, a TA or a Teacher
+\item Course - Schema representing a single course 
+\item Event - Schema representing a lecture to show in the calendar 
+\item Presence - Schema representing the presence of a user to a lecture
+\item Region - Schema representing the settings for the beacons related to a defined Room
+\item Room - Schema representing a room of the Campus
+\end{itemize}
+
+\subsection{Authentication}
+Even if we couldn't use Moodle database, we could still ask the service to authenticate the users of our app. \\
+At login, the user is asked for his username and password, which are sent, through a serie of HTTPs requests, to the Moodle platform. \\
+What we have in response, in case of successful authentication, is a set of cookies containing different session data, including the Moodle token necessary to make sure that the actual user exists in the Moodle database, which is the only thing we need at this point.\\
+Once obtained this token, we could use the Backend route that the Icorsi developers built for us in order ti retrieve a set of the user data from Moodle, such as Id, Username, Email, First name, Last name and others. In this way, we could define a precise relation between our database and the Moodle database through the Id of the user and use this to be sure that our app users are actually registered to the university platform.
+Every time the user goes through our login, all this steps are done once again in order to make sure that there aren't any important changes in the Moodle database that should be reflected in our own, such as change in the user email, username or others.
+
+\subsection{Authorisation}
+Once logged in and authenticated, we know that the actual user is a real, existing user already registered to the Icorsi Platform. This, however, is not enough to provide a strong security level for our application. The app requests are still sent to \textbf{our} server, and we needed some form of authorisation in order to acknowledge the valid requests and refuse the others.\\
+For this reason, we implemented an authorisation level based on JWT tokens:\\
+On a successful login, we generate a token - different form the Moodle token we obtained, which we use only for authentication - that is sent to our mobile app together with the user data. This token is saved on the user phone and is sent with every request the app does to our server. Since the same token is saved on our database, we are able to verify that the token in the request exists, belong to that user and it is not expired yet. In case one of this checks fails, the request is immediately refused and a new login is requested to the user. 
