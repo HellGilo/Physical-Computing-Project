@@ -1,0 +1,15 @@
+\contentsline {section}{\numberline {1}Apple iBeacon Technology}{3}
+\contentsline {subsection}{\numberline {1.1}Reading the iBeacon signal}{3}
+\contentsline {section}{\numberline {2}Indoor Localisation}{4}
+\contentsline {subsection}{\numberline {2.1}Our first implementation}{4}
+\contentsline {subsection}{\numberline {2.2}Our second implementation}{5}
+\contentsline {subsection}{\numberline {2.3}Our third implementation}{5}
+\contentsline {subsection}{\numberline {2.4}Our final implementation}{6}
+\contentsline {section}{\numberline {3}Estimote Framework and Hardware}{7}
+\contentsline {subsection}{\numberline {3.1}The framework}{8}
+\contentsline {section}{\numberline {4}The iPhone Application}{9}
+\contentsline {subsection}{\numberline {4.1}The technical operation}{9}
+\contentsline {subsection}{\numberline {4.2}Outside behaviours}{10}
+\contentsline {subsection}{\numberline {4.3}Inside operation}{11}
+\contentsline {section}{\numberline {5}The Dashboard}{12}
+\contentsline {section}{\numberline {6}The Dashboard}{13}

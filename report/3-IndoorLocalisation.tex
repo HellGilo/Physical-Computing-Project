@@ -33,11 +33,10 @@ Even with this solution we had lots of troubles about the precision of the local
 From this idea we thought that, since every room has four walls, the best idea was to triangulate the position using not three beacons but four of them.\\
 
 \subsection{Our third implementation}
-In this implementation we move closer to the implementation adopted by the Estimote's engineers: using four beacons, one for each wall of the room.\\
-
-In fact we figured out that the increased a lot the localisation precision with this last implementation. By positioning a beacon in the center of each wall we could triangulate better the final position.\\
+Using four beacons (one for each wall of the room) increased a lot the localisation precision with this last implementation. By positioning a beacon in the center of each wall we could triangulate better the final position.\\
 
 Even if we improved a lot the quality of the tracking there still were mainly two issues:
+
 \begin{itemize}
 \item In non-controlled environments, where you can find metals, and other objects that affect the signal, the received signal strength of the beacons changes so often that it seems impossible to get error range below 5 meters.
 \item Depending on the way that the user is handling the receiver device, the readings can change a lot as well. If the user puts his/her hand over the bluetooth antenna, then the algorithm will have low signals as input, and thus the beacons will supposed to be very far from the device. See this image to see the precise location of the Bluetooth antenna.
@@ -52,4 +51,4 @@ Even if we improved a lot the quality of the tracking there still were mainly tw
 \end{figure}
 
 \subsection{Our final implementation}
-Since we moved closer and closer to the implementation adopted by Estimote we concluded that the best solution was to move to that implementation using the Estimote Frameworks (see \ref{estimoteframework}), available for free in the Estimote website. It uses the same idea we had in the third implementation but adds more then a year of refinement about error correction, wireless noise detection and reduction, as well as the possibility to map the position of each beacon respect to the others by counting the distance between them using an ad-hoc app developed by the Estimote.
+Since we moved closer and closer to the implementation adopted by Estimote we concluded that the best solution was to move to that implementation using the Estimote Frameworks (see \ref{estimoteframework}), available for free in the Estimote website. It uses the same idea we had in the third implementation but adds more then a year of refinement about error correction, wireless noise detection and reduction, as well as the possibility to map the position of each beacon respect to the others by counting the distance between them using an ad-hoc app developed by the Estimote. We thought about implementing the same solution ourselves, but the error correcting algorithm and heuristics were nontrivial (and also, not everything is publicly disclosed).
