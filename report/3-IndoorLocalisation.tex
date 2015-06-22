@@ -29,7 +29,7 @@ In this implementation we tried to use less beacon possible for a triangulation,
 \end{center}
 \end{figure}
 
-Even with this solution we had lots of troubles about the precision of the localisation. It wasn't easy to determine with enough precision the position of a device close to the entering/exit doors and how much a user is close to each wall (maybe someone is trying to ``cheat" sticking the device close to a wall).
+Following the algorithm from this \href{http://everything2.com/title/Triangulate}{article}, and \href{http://stackoverflow.com/questions/20332856/triangulate-example-for-ibeacons}{this StackOverflow discussion} the solution could be implemented in a few lines of code. Unfortunately, even with this solution we had lots of troubles about the precision of the localisation. It wasn't easy to determine with enough precision the position of a device close to the entering/exit doors and how much a user is close to each wall (maybe someone is trying to ``cheat" sticking the device close to a wall).
 From this idea we thought that, since every room has four walls, the best idea was to triangulate the position using not three beacons but four of them.\\
 
 \subsection{Our third implementation}
