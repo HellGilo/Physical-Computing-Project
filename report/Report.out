@@ -1,0 +1,19 @@
+\BOOKMARK [1][-]{section.1}{iBeacon Technology}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Reading the iBeacon signal}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{Indoor Localisation}{}% 3
+\BOOKMARK [2][-]{subsection.2.1}{Our first implementation}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.2}{Our second implementation}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.3}{Our third implementation}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.4}{Our final implementation}{section.2}% 7
+\BOOKMARK [1][-]{section.3}{Estimote Framework and Hardware}{}% 8
+\BOOKMARK [2][-]{subsection.3.1}{The framework}{section.3}% 9
+\BOOKMARK [1][-]{section.4}{The iPhone Application}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{The technical operation}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{Outside behaviours}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{Inside operation}{section.4}% 13
+\BOOKMARK [1][-]{section.5}{Backend}{}% 14
+\BOOKMARK [2][-]{subsection.5.1}{Server}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.2}{Database}{section.5}% 16
+\BOOKMARK [2][-]{subsection.5.3}{Authentication}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.4}{Authorisation}{section.5}% 18
+\BOOKMARK [1][-]{section.6}{The Dashboard}{}% 19
